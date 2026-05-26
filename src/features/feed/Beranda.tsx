@@ -19,11 +19,12 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { formatRupiah, formatRelativeTime } from '@/lib/utils';
 import { Post } from '@/types/post';
+import { UserRole } from '@/types/user';
 
 export interface BerandaProps {
   posts: Post[];
   onLikePost: (postId: string) => void;
-  currentRoleMode: 'PETANI' | 'PEMBELI';
+  currentRoleMode: UserRole;
 }
 
 export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaProps) {

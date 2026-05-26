@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, UploadCloud, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Post } from '@/types/post';
+import { Post, PostType } from '@/types/post';
 
 export interface CreateListingProps {
   onAddPost: (post: Post) => void;
@@ -16,9 +16,7 @@ export interface CreateListingProps {
 export default function CreateListing({ onAddPost }: CreateListingProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const listingType = (searchParams.get('type') || 'penawaran').toUpperCase() as
-    | 'PENAWARAN'
-    | 'PERMINTAAN';
+  const listingType = (searchParams.get('type') || 'penawaran').toUpperCase() as PostType;
 
   // State Management
   const [commodity, setCommodity] = useState('Cabai Merah');

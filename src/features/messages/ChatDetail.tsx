@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
+import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 
@@ -32,7 +33,7 @@ export default function ChatDetail() {
   });
 
   const [inputText, setInputText] = useState('');
-  const [negotiationStatus, setNegotiationStatus] = useState<'PENDING' | 'ACCEPTED' | 'REJECTED'>(
+  const [negotiationStatus, setNegotiationStatus] = useState<NegotiationStatus>(
     chat.negotiationInfo?.status || 'PENDING',
   );
 

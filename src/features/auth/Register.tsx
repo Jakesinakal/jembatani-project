@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Check, Compass, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { UserRole } from '@/types/user';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [mainRole, setMainRole] = useState<'PETANI' | 'PEMBELI' | null>(null);
+  const [mainRole, setMainRole] = useState<UserRole | null>(null);
   const [province, setProvince] = useState('Jawa Barat');
   const [city, setCity] = useState('Garut');
   const [selectedCrops, setSelectedCrops] = useState<string[]>([]);

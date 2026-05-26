@@ -5,12 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm install       # Install dependencies
-npm run dev       # Start dev server at http://localhost:3000
-npm run build     # Production build
-npm run lint      # Type-check only (tsc --noEmit) — no test runner configured
-npm run clean     # Remove dist and server.js
+npm install          # Install dependencies
+npm run dev          # Start dev server at http://localhost:3000
+npm run build        # Production build
+npm run typecheck    # Type-check only (tsc --noEmit)
+npm run lint         # ESLint check
+npm run lint:fix     # ESLint auto-fix
+npm run format       # Prettier format all files
+npm run format:check # Prettier check without writing
+npm run clean        # Remove dist and server.js
 ```
+
+**Pre-commit hooks**: Husky runs lint-staged on every commit — staged `.ts/.tsx/.js/.jsx` files are auto-formatted with Prettier and ESLint-fixed; `.css/.json/.md` files are Prettier-formatted only.
 
 ## Environment Setup
 
@@ -18,7 +24,7 @@ Copy `.env.example` to `.env.local` and set `GEMINI_API_KEY`. The app also reads
 
 ## Design System
 
-All styling must follow `jembatani_design_tokens.md` — the single source of truth for the design system. Key points:
+All styling must follow `docs/design-tokens.md` — the single source of truth for the design system. Key points:
 
 - **Tokens live in `src/index.css`** inside a `@theme {}` block (Tailwind v4 CSS-in-CSS format, not `tailwind.config.ts`)
 - **Color tokens** follow Material Design 3 semantic naming: always use `bg-surface`, `text-on-primary`, etc. — never raw hex
@@ -38,6 +44,8 @@ All styling must follow `jembatani_design_tokens.md` — the single source of tr
 
 - `AuthShell` — wraps unauthenticated screens (splash, onboarding, login, register); no bottom nav
 - `AppShell` — wraps authenticated screens; holds global state (`posts`, `currentRoleMode`), renders `BottomNav` and `CreateBottomSheet`, passes state down via `useOutletContext<AppShellContext>`
+
+`AppShellContext` is exported from `App.tsx` — import it from there when adding new wrapper components.
 
 Each authenticated screen requiring shared state uses a wrapper component (e.g., `BerandaWrapper`, `AkunWrapper`) to extract the context and forward typed props. This avoids prop-drilling through the router layer.
 
@@ -59,7 +67,7 @@ All app state lives in `AppShell` (no external store). `currentRoleMode` (`UserR
 
 ### Data Layer
 
-All data is currently mocked: `src/data/mockData.ts` exports `mockPosts` (Post[]) and `mockCommodities` (CommodityPriceInfo[]). There is no backend API integration yet — the `GEMINI_API_KEY` dependency exists for planned AI features.
+All data is currently mocked: `src/data/mockData.ts` exports `mockPosts` (Post[]) and `mockCommodities` (CommodityPriceInfo[]). There is no backend API integration yet — the `GEMINI_API_KEY` / `@google/genai` dependency exists for planned AI features.
 
 ### Types (`src/types/`)
 
@@ -68,9 +76,12 @@ All data is currently mocked: `src/data/mockData.ts` exports `mockPosts` (Post[]
 - `commodity.ts` — `CommodityPriceInfo`, `CommodityCategory` (`'SAYURAN' | 'BUAH' | 'PADI' | 'REMPAH' | 'PERKEBUNAN'`)
 - `chat.ts` — chat-related types
 
-### Styling
+### Styling & Key Libraries
 
 Tailwind CSS v4 (via `@tailwindcss/vite` plugin). Uses Material Design 3-style semantic color tokens as Tailwind classes (e.g., `bg-surface`, `text-on-primary`, `bg-primary-container`). Two font families: `font-fraunces` (display/headings) and `font-jakarta` (body). The `@` alias resolves to `src/`.
+
+- **Icons**: `lucide-react` — use its tree-shakeable named imports
+- **Animations**: `motion` (Motion for React, a Framer Motion fork) — use for transitions and gestures
 
 ### UI Components (`src/components/`)
 
