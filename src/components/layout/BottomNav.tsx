@@ -38,13 +38,12 @@ export function BottomNav({ onPlusClick }: BottomNavProps) {
               key={tab.name}
               id="action-create-sheet-trigger"
               onClick={onPlusClick}
-              className="flex flex-col items-center justify-center -translate-y-4 transition-all hover:scale-105 active:scale-95"
-              style={{ width: '56px', height: '56px' }}
+              className="flex flex-col items-center justify-center py-1 flex-1 transition-all hover:scale-105 active:scale-95"
             >
-              <div className="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg hover:shadow-xl">
-                <Plus strokeWidth={1.5} className="w-7 h-7" />
+              <div className="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center">
+                <Plus strokeWidth={2} className="w-8 h-8" />
               </div>
-              <span className="text-body-sm font-bold font-jakarta text-primary mt-1">
+              <span className="text-body-sm font-bold font-jakarta text-on-surface mt-1 tracking-wide">
                 {tab.name}
               </span>
             </button>
@@ -60,20 +59,20 @@ export function BottomNav({ onPlusClick }: BottomNavProps) {
             <div
               className={`p-1 px-3 rounded-full transition-all duration-200 ${
                 isActive
-                  ? 'bg-primary-container text-on-primary-container'
+                  ? 'bg-primary-container'
                   : 'text-on-surface-variant group-hover:bg-surface-container-high'
               }`}
             >
               <Icon
                 strokeWidth={1.5}
                 className={`w-6 h-6 transition-transform group-active:scale-90 ${
-                  isActive ? 'text-primary' : 'text-on-surface-variant'
+                  isActive ? 'text-primary-fixed-dim' : 'text-on-surface-variant'
                 }`}
               />
             </div>
             <span
               className={`text-body-sm font-bold font-jakarta mt-1 tracking-wide ${
-                isActive ? 'text-primary' : 'text-on-surface-variant'
+                isActive ? 'text-on-surface' : 'text-on-surface-variant'
               }`}
             >
               {tab.name}
