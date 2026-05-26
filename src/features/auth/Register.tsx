@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Check, Compass, ShieldCheck, HelpCircle } from 'lucide-react';
+import { ChevronLeft, Check, Compass, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export default function Register() {
@@ -49,7 +49,7 @@ export default function Register() {
       }
       setStep(2);
     } else if (step === 2) {
-      if (otp.some(v => v === '')) {
+      if (otp.some((v) => v === '')) {
         setErrorMsg('Harap masukkan 6 digit kode OTP verifikasi HP.');
         return;
       }
@@ -93,7 +93,7 @@ export default function Register() {
 
   const handleToggleCrop = (crop: string) => {
     if (selectedCrops.includes(crop)) {
-      setSelectedCrops(selectedCrops.filter(c => c !== crop));
+      setSelectedCrops(selectedCrops.filter((c) => c !== crop));
     } else {
       setSelectedCrops([...selectedCrops, crop]);
     }
@@ -110,9 +110,11 @@ export default function Register() {
           >
             <ChevronLeft className="w-5 h-5" /> Kembali
           </button>
-          
+
           <div className="flex items-center gap-2">
-            <span className="text-body-sm font-bold font-jakarta text-on-surface-variant">Langkah {step} dari 4</span>
+            <span className="text-body-sm font-bold font-jakarta text-on-surface-variant">
+              Langkah {step} dari 4
+            </span>
           </div>
         </div>
 
@@ -134,13 +136,19 @@ export default function Register() {
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">Buat Akun Baru</h2>
-              <p className="font-jakarta text-body-md text-on-surface-variant">Bergabunglah dengan ribuan petani dan pembeli di JembaTani.</p>
+              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">
+                Buat Akun Baru
+              </h2>
+              <p className="font-jakarta text-body-md text-on-surface-variant">
+                Bergabunglah dengan ribuan petani dan pembeli di JembaTani.
+              </p>
             </div>
 
             <div className="space-y-4 bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm">
               <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Nama Lengkap</label>
+                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                  Nama Lengkap
+                </label>
                 <input
                   type="text"
                   value={fullName}
@@ -151,7 +159,9 @@ export default function Register() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Nomor HP (WhatsApp)</label>
+                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                  Nomor HP (WhatsApp)
+                </label>
                 <input
                   type="text"
                   value={phone}
@@ -162,7 +172,9 @@ export default function Register() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Email (Opsional)</label>
+                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                  Email (Opsional)
+                </label>
                 <input
                   type="email"
                   value={email}
@@ -174,7 +186,9 @@ export default function Register() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Kata Sandi</label>
+                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                    Kata Sandi
+                  </label>
                   <input
                     type="password"
                     value={password}
@@ -184,7 +198,9 @@ export default function Register() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Ulangi Kata Sandi</label>
+                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                    Ulangi Kata Sandi
+                  </label>
                   <input
                     type="password"
                     value={confirmPassword}
@@ -202,14 +218,20 @@ export default function Register() {
         {step === 2 && (
           <div className="space-y-6">
             <div>
-              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">Verifikasi Nomor HP</h2>
+              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">
+                Verifikasi Nomor HP
+              </h2>
               <p className="font-jakarta text-body-md text-on-surface-variant">
-                Kami telah mengirimkan SMS berisi 6-digit kode OTP ke nomor <b className="text-on-surface">{phone}</b>.
+                Kami telah mengirimkan SMS berisi 6-digit kode OTP ke nomor{' '}
+                <b className="text-on-surface">{phone}</b>.
               </p>
             </div>
 
             <div className="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm text-center">
-              <div id="otp-input-baskets" className="flex justify-between max-w-sm mx-auto mb-6 gap-2">
+              <div
+                id="otp-input-baskets"
+                className="flex justify-between max-w-sm mx-auto mb-6 gap-2"
+              >
                 {otp.map((digit, idx) => (
                   <input
                     key={idx}
@@ -225,7 +247,8 @@ export default function Register() {
               </div>
 
               <div className="font-jakarta text-body-sm text-on-surface-variant">
-                Dapatkan kode baru via WhatsApp dalam <span className="text-secondary font-bold">59 detik</span>.
+                Dapatkan kode baru via WhatsApp dalam{' '}
+                <span className="text-secondary font-bold">59 detik</span>.
               </div>
             </div>
           </div>
@@ -235,9 +258,12 @@ export default function Register() {
         {step === 3 && (
           <div className="space-y-6">
             <div>
-              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">Pilih Peran Utama Anda</h2>
+              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">
+                Pilih Peran Utama Anda
+              </h2>
               <p className="font-jakarta text-body-md text-on-surface-variant">
-                Sesuaikan fitur utama beranda Anda untuk fokus menjual atau membeli. Kamu tetap bisa ganti kapan saja nanti.
+                Sesuaikan fitur utama beranda Anda untuk fokus menjual atau membeli. Kamu tetap bisa
+                ganti kapan saja nanti.
               </p>
             </div>
 
@@ -253,16 +279,25 @@ export default function Register() {
                     : 'border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low'
                 }`}
               >
-                <div className={`p-3 rounded-full ${mainRole === 'PETANI' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'}`}>
+                <div
+                  className={`p-3 rounded-full ${mainRole === 'PETANI' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'}`}
+                >
                   <ShieldCheck className="w-7 h-7" />
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-fraunces text-body-lg font-bold text-primary">Saya Petani / Produsen</span>
-                    {mainRole === 'PETANI' && <div className="bg-primary text-on-primary rounded-full p-0.5"><Check className="w-3" /></div>}
+                    <span className="font-fraunces text-body-lg font-bold text-primary">
+                      Saya Petani / Produsen
+                    </span>
+                    {mainRole === 'PETANI' && (
+                      <div className="bg-primary text-on-primary rounded-full p-0.5">
+                        <Check className="w-3" />
+                      </div>
+                    )}
                   </div>
                   <p className="font-jakarta text-body-sm text-on-surface-variant leading-relaxed">
-                    Mau menjual hasil bumi segar, membuat penawaran pasokan harvest, serta merespon permintaan borongan dari restoran/pabrik.
+                    Mau menjual hasil bumi segar, membuat penawaran pasokan harvest, serta merespon
+                    permintaan borongan dari restoran/pabrik.
                   </p>
                 </div>
               </button>
@@ -278,16 +313,25 @@ export default function Register() {
                     : 'border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low'
                 }`}
               >
-                <div className={`p-3 rounded-full ${mainRole === 'PEMBELI' ? 'bg-secondary text-on-secondary' : 'bg-surface-container text-on-surface-variant'}`}>
+                <div
+                  className={`p-3 rounded-full ${mainRole === 'PEMBELI' ? 'bg-secondary text-on-secondary' : 'bg-surface-container text-on-surface-variant'}`}
+                >
                   <Compass className="w-7 h-7" />
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-fraunces text-body-lg font-bold text-primary">Saya Pembeli Grosir / Retail</span>
-                    {mainRole === 'PEMBELI' && <div className="bg-secondary text-on-secondary rounded-full p-0.5"><Check className="w-3" /></div>}
+                    <span className="font-fraunces text-body-lg font-bold text-primary">
+                      Saya Pembeli Grosir / Retail
+                    </span>
+                    {mainRole === 'PEMBELI' && (
+                      <div className="bg-secondary text-on-secondary rounded-full p-0.5">
+                        <Check className="w-3" />
+                      </div>
+                    )}
                   </div>
                   <p className="font-jakarta text-body-sm text-on-surface-variant leading-relaxed">
-                    Mencari pasokan sayur segar langsung, membuat rincian permintaan pasokan B2B, atau membeli kebutuhan dapur harian B2C.
+                    Mencari pasokan sayur segar langsung, membuat rincian permintaan pasokan B2B,
+                    atau membeli kebutuhan dapur harian B2C.
                   </p>
                 </div>
               </button>
@@ -299,15 +343,21 @@ export default function Register() {
         {step === 4 && (
           <div className="space-y-6">
             <div>
-              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">Lokasi & Komoditas Minat</h2>
-              <p className="font-jakarta text-body-md text-on-surface-variant">Sampaikan domisili Anda untuk mengaktifkan ticker harga lokal terdekat.</p>
+              <h2 className="font-fraunces text-headline-md font-bold text-primary mb-2">
+                Lokasi & Komoditas Minat
+              </h2>
+              <p className="font-jakarta text-body-md text-on-surface-variant">
+                Sampaikan domisili Anda untuk mengaktifkan ticker harga lokal terdekat.
+              </p>
             </div>
 
             <div className="space-y-6 bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm">
               {/* Province / City Form */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Provinsi</label>
+                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                    Provinsi
+                  </label>
                   <select
                     value={province}
                     onChange={(e) => setProvince(e.target.value)}
@@ -319,7 +369,9 @@ export default function Register() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Kabupaten / Kota</label>
+                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                    Kabupaten / Kota
+                  </label>
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
@@ -337,7 +389,17 @@ export default function Register() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                    Pilih Komoditas Minat (<span className={selectedCrops.length >= 3 ? "text-primary font-bold" : "text-secondary font-bold"}>{selectedCrops.length}</span> terpilih)
+                    Pilih Komoditas Minat (
+                    <span
+                      className={
+                        selectedCrops.length >= 3
+                          ? 'text-primary font-bold'
+                          : 'text-secondary font-bold'
+                      }
+                    >
+                      {selectedCrops.length}
+                    </span>{' '}
+                    terpilih)
                   </label>
                   <span className="text-body-sm text-on-surface-variant">Pilih minimal 3</span>
                 </div>
@@ -368,7 +430,14 @@ export default function Register() {
       </div>
 
       <div className="mt-8">
-        <Button id="wizard-submit-btn" type="button" variant="primary" fullWidth onClick={handleNextStep} className="py-3.5 shadow-md">
+        <Button
+          id="wizard-submit-btn"
+          type="button"
+          variant="primary"
+          fullWidth
+          onClick={handleNextStep}
+          className="py-3.5 shadow-md"
+        >
           {step === 4 ? 'Selesaikan Pendaftaran (Mulai)' : 'Lanjutkan'}
         </Button>
       </div>

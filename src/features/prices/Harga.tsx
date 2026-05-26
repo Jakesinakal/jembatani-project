@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown } from 'lucide-react';
 import { mockCommodities } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
 import { CommodityPriceInfo, CommodityCategory } from '@/types/commodity';
 
 type TickerGroup = 'SAYURAN' | 'BUAH' | 'KOMODITAS';
-const TICKER_GROUPS: TickerGroup[] = ['SAYURAN', 'BUAH', 'KOMODITAS'];
 const TICKER_GROUP_LABELS: Record<TickerGroup, string> = {
   SAYURAN: '🥦 Sayuran',
   BUAH: '🍋 Buah',
@@ -19,38 +18,66 @@ const TICKER_GROUP_LABELS: Record<TickerGroup, string> = {
 };
 const KOMODITAS_CATEGORIES: CommodityCategory[] = ['PADI', 'REMPAH', 'PERKEBUNAN'];
 const TICKER_INTERVAL = 5000;
+const GRID_COLS = 3;
+const GRID_ROWS = 4;
+const PAGE_SIZE = GRID_COLS * GRID_ROWS; // 12
 
-function CategoryTicker({ commodities }: { key?: string; commodities: CommodityPriceInfo[] }) {
+interface TickerSlide {
+  group: TickerGroup;
+  page: number;
+  totalPages: number;
+  items: (CommodityPriceInfo | null)[];
+}
+
+function buildSlides(allCommodities: CommodityPriceInfo[]): TickerSlide[] {
+  const groups: TickerGroup[] = ['SAYURAN', 'BUAH', 'KOMODITAS'];
+  const slides: TickerSlide[] = [];
+  for (const group of groups) {
+    const items = allCommodities.filter((c) =>
+      group === 'KOMODITAS' ? KOMODITAS_CATEGORIES.includes(c.category) : c.category === group,
+    );
+    const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+    for (let p = 0; p < totalPages; p++) {
+      const slice = items.slice(p * PAGE_SIZE, (p + 1) * PAGE_SIZE);
+      // Pad to PAGE_SIZE so every grid is identical size
+      const padded: (CommodityPriceInfo | null)[] = [
+        ...slice,
+        ...Array(PAGE_SIZE - slice.length).fill(null),
+      ];
+      slides.push({ group, page: p, totalPages, items: padded });
+    }
+  }
+  return slides;
+}
+
+function TickerGrid({ slide }: { key?: number; slide: TickerSlide }) {
   return (
-    <div className="divide-y divide-outline-variant/40">
-      {/* Table header */}
-      <div className="flex items-center px-3 py-1.5">
-        <span className="flex-1 font-jakarta text-body-sm font-bold text-on-surface-variant uppercase tracking-wider">
-          Komoditas
-        </span>
-        <span className="w-28 text-right font-jakarta text-body-sm font-bold text-on-surface-variant uppercase tracking-wider">
-          Harga
-        </span>
-        <span className="w-16 text-right font-jakarta text-body-sm font-bold text-on-surface-variant uppercase tracking-wider">
-          Delta
-        </span>
-      </div>
-      {/* Table rows */}
-      {commodities.map((item) => (
-        <div key={item.id} className="flex items-center px-3 py-2">
-          <span className="flex-1 font-jakarta text-body-md font-semibold text-on-surface">
-            {item.name}
-          </span>
-          <span className="w-28 text-right font-fraunces text-body-md font-bold text-on-surface tabular-nums">
-            {formatRupiah(item.priceToday)}
-          </span>
-          <span
-            className={`w-16 text-right font-jakarta text-label-md font-bold ${
-              item.isUp ? 'text-on-tertiary-container' : 'text-secondary'
-            }`}
-          >
-            {item.isUp ? '▲' : '▼'} {item.deltaPercent}%
-          </span>
+    <div
+      className="grid gap-px bg-outline-variant/30"
+      style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+    >
+      {slide.items.map((item, i) => (
+        <div
+          key={item ? item.id : `empty-${i}`}
+          className="bg-surface-container-low px-2 py-2.5 flex flex-col gap-0.5"
+        >
+          {item ? (
+            <>
+              <span className="font-jakarta text-body-sm font-semibold text-on-surface truncate">
+                {item.name}
+              </span>
+              <span className="font-fraunces text-body-sm font-bold text-on-surface tabular-nums">
+                {formatRupiah(item.priceToday)}
+              </span>
+              <span
+                className={`font-jakarta text-body-sm font-bold ${item.isUp ? 'text-on-tertiary-container' : 'text-secondary'}`}
+              >
+                {item.isUp ? '▲' : '▼'} {item.deltaPercent}%
+              </span>
+            </>
+          ) : (
+            <span className="text-body-sm text-outline-variant">—</span>
+          )}
         </div>
       ))}
     </div>
@@ -60,29 +87,30 @@ function CategoryTicker({ commodities }: { key?: string; commodities: CommodityP
 export default function Harga() {
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState('Jawa Barat');
-  const [activeCategory, setActiveCategory] = useState<'SEMUA' | CommodityCategory>('SEMUA');
-  const [tickerCategoryIndex, setTickerCategoryIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'GAINER' | 'LOSER'>('GAINER');
+  const slides = buildSlides(mockCommodities);
+  const currentSlide = slides[slideIndex];
 
-  const currentTickerGroup = TICKER_GROUPS[tickerCategoryIndex];
-  const tickerCommodities = mockCommodities.filter((c) =>
-    currentTickerGroup === 'KOMODITAS'
-      ? KOMODITAS_CATEGORIES.includes(c.category)
-      : c.category === currentTickerGroup,
-  );
+  const topList = useMemo(() => {
+    const all = [...mockCommodities];
+    if (activeTab === 'GAINER')
+      return all
+        .filter((c) => c.isUp)
+        .sort((a, b) => b.deltaPercent - a.deltaPercent)
+        .slice(0, 10);
+    return all
+      .filter((c) => !c.isUp)
+      .sort((a, b) => b.deltaPercent - a.deltaPercent)
+      .slice(0, 10);
+  }, [activeTab]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTickerCategoryIndex((prev) => (prev + 1) % TICKER_GROUPS.length);
+      setSlideIndex((prev) => (prev + 1) % slides.length);
     }, TICKER_INTERVAL);
     return () => clearInterval(interval);
-  }, []);
-
-  // Filtered list of commodities
-  const filteredCommodities = mockCommodities.filter((item) => {
-    if (activeCategory === 'SEMUA') return true;
-    // Handle category match
-    return item.category === activeCategory;
-  });
+  }, [slides.length]);
 
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
@@ -128,127 +156,113 @@ export default function Harga() {
       <div className="mt-6 px-5">
         <div className="bg-surface-container-low rounded-lg border border-outline-variant/60 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-3 pt-2.5 pb-1">
+          <div className="flex items-center justify-between px-3 pt-2.5 pb-2">
             <span className="font-jakarta text-label-md font-bold text-on-surface uppercase tracking-wider">
-              {TICKER_GROUP_LABELS[currentTickerGroup]}
+              {TICKER_GROUP_LABELS[currentSlide.group]}
+              {currentSlide.totalPages > 1 && (
+                <span className="ml-2 text-on-surface-variant font-normal normal-case tracking-normal">
+                  {currentSlide.page + 1}/{currentSlide.totalPages}
+                </span>
+              )}
             </span>
             <div className="flex gap-1.5">
-              {TICKER_GROUPS.map((_, idx) => (
+              {slides.map((s, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setTickerCategoryIndex(idx)}
+                  onClick={() => setSlideIndex(idx)}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
-                    idx === tickerCategoryIndex ? 'w-5 bg-primary' : 'w-1.5 bg-outline-variant'
+                    idx === slideIndex
+                      ? 'w-5 bg-primary'
+                      : s.group === currentSlide.group
+                        ? 'w-1.5 bg-primary/40'
+                        : 'w-1.5 bg-outline-variant'
                   }`}
                 />
               ))}
             </div>
           </div>
 
-          {/* Fixed-height table area */}
-          <div className="px-3 pb-2.5 h-52 overflow-hidden">
-            <CategoryTicker key={currentTickerGroup} commodities={tickerCommodities} />
+          {/* Grid */}
+          <div className="pb-px">
+            <TickerGrid key={slideIndex} slide={currentSlide} />
           </div>
         </div>
       </div>
 
-      {/* Commodity Category Chip Slider */}
+      {/* Naik & Turun */}
       <div className="px-5 mt-6">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-label-md font-bold text-on-surface font-jakarta uppercase tracking-wider">
-            Komoditas Regional
-          </span>
-          <span className="text-body-sm font-semibold text-on-surface-variant px-2 py-0.5 bg-surface-container rounded flex items-center gap-1">
-            <Info className="w-3 h-3 text-secondary" /> Satuan per Kg
-          </span>
+        {/* Tab bar */}
+        <div className="flex rounded-lg overflow-hidden border border-outline-variant/60 mb-3">
+          {(
+            [
+              { key: 'GAINER', label: 'Kenaikan Tertinggi', icon: TrendingUp },
+              { key: 'LOSER', label: 'Penurunan Tertinggi', icon: TrendingDown },
+            ] as const
+          ).map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-label-md font-bold font-jakarta transition-colors ${
+                activeTab === key
+                  ? key === 'GAINER'
+                    ? 'bg-primary text-on-primary'
+                    : 'bg-secondary text-on-secondary'
+                  : 'bg-surface-container-low text-on-surface-variant'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {label}
+            </button>
+          ))}
         </div>
 
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-          <button
-            onClick={() => setActiveCategory('SEMUA')}
-            className={`px-4 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 ${
-              activeCategory === 'SEMUA'
-                ? 'bg-primary text-on-primary shadow-sm'
-                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
-            }`}
-          >
-            Semua
-          </button>
+        {/* List */}
+        <div className="bg-surface-container-lowest rounded-lg border border-outline-variant/60 overflow-hidden divide-y divide-outline-variant/40">
+          {topList.map((item, rank) => (
+            <div
+              key={item.id}
+              onClick={() => navigate(`/harga/${item.id}`)}
+              className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-surface-container-low transition-colors"
+            >
+              {/* Rank */}
+              <span className="w-5 text-center font-fraunces text-body-sm font-bold text-on-surface-variant tabular-nums shrink-0">
+                {rank + 1}
+              </span>
 
-          {(['SAYURAN', 'BUAH', 'PADI', 'REMPAH', 'PERKEBUNAN'] as CommodityCategory[]).map(
-            (cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 uppercase tracking-wide ${
-                  activeCategory === cat
-                    ? 'bg-primary-fixed text-on-primary-fixed-variant shadow-sm border border-primary/20'
-                    : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                {cat === 'PADI'
-                  ? '🌾 Padi-padian'
-                  : cat === 'SAYURAN'
-                    ? '🥦 Sayuran'
-                    : cat === 'BUAH'
-                      ? '🍋 Buah'
-                      : cat === 'REMPAH'
-                        ? '🌶️ Rempah'
-                        : '☕ Kopi/Kebun'}
-              </button>
-            ),
-          )}
-        </div>
-      </div>
-
-      {/* 2-Column Commodity Price List Grid */}
-      <div id="commodity-grid-stack" className="px-5 mt-4 grid grid-cols-2 gap-3.5">
-        {filteredCommodities.map((item) => (
-          <div
-            key={item.id}
-            id={`commodity-cell-${item.id}`}
-            onClick={() => navigate(`/harga/${item.id}`)}
-            className="bg-surface-container-lowest rounded-lg border border-outline-variant p-3 flex flex-col justify-between cursor-pointer hover:border-primary transition-all shadow-[0_2px_12px_rgba(0,0,0,0.015)] relative overflow-hidden group"
-          >
-            <div className="flex items-start gap-2 mb-2">
+              {/* Photo */}
               <img
                 src={item.photo}
                 alt={item.name}
-                className="w-12 h-12 rounded object-cover border border-outline-variant/40"
+                className="w-9 h-9 rounded object-cover border border-outline-variant/40 shrink-0"
                 referrerPolicy="no-referrer"
               />
+
+              {/* Name + category */}
               <div className="flex-1 min-w-0">
-                <h4 className="font-fraunces font-bold text-body-sm text-primary leading-tight line-clamp-2 truncate group-hover:text-secondary transition-colors">
+                <span className="font-jakarta text-body-md font-semibold text-on-surface block truncate">
                   {item.name}
-                </h4>
-                <span className="text-body-sm font-jakarta font-bold text-on-surface-variant uppercase tracking-wider block mt-0.5">
+                </span>
+                <span className="font-jakarta text-body-sm text-on-surface-variant uppercase tracking-wider">
                   {item.category}
                 </span>
               </div>
-            </div>
 
-            <div className="pt-2 border-t border-outline-variant/40 flex items-end justify-between">
-              <div>
-                <span className="text-body-sm font-bold text-secondary font-fraunces tabular-nums">
+              {/* Price + delta */}
+              <div className="text-right shrink-0">
+                <span className="font-fraunces text-body-md font-bold text-on-surface tabular-nums block">
                   {formatRupiah(item.priceToday)}
                 </span>
-                <span className="text-body-sm text-on-surface-variant font-jakarta block font-medium">
-                  /{item.unit.replace('/', '')}
+                <span
+                  className={`font-jakarta text-body-sm font-bold ${
+                    item.isUp ? 'text-on-tertiary-container' : 'text-secondary'
+                  }`}
+                >
+                  {item.isUp ? '▲' : '▼'} {item.deltaPercent}%
                 </span>
               </div>
-
-              <span
-                className={`text-body-sm font-bold px-1.5 py-0.5 rounded ${
-                  item.isUp
-                    ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant'
-                    : 'bg-error-container text-on-error-container'
-                }`}
-              >
-                {item.isUp ? '↑' : '↓'} {item.deltaPercent}%
-              </span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

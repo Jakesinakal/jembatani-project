@@ -12,7 +12,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children?: React.ReactNode;
   className?: string;
   id?: string;
-  onClick?: any;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
 }
 
@@ -24,15 +24,19 @@ export function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const baseStyle = 'inline-flex items-center justify-center font-jakarta font-semibold tracking-wide transition-all active:translate-y-px';
-  
+  const baseStyle =
+    'inline-flex items-center justify-center font-jakarta font-semibold tracking-wide transition-all active:translate-y-px';
+
   const variantStyles = {
     // Primary - Deep forest, brand color
-    primary: 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container rounded-lg focus:ring-2 focus:ring-primary',
+    primary:
+      'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container rounded-lg focus:ring-2 focus:ring-primary',
     // Secondary - Warm red for action CTAs (Beli, Tawar, Penuhi)
-    secondary: 'bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container rounded-lg focus:ring-2 focus:ring-secondary',
+    secondary:
+      'bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container rounded-lg focus:ring-2 focus:ring-secondary',
     // Outlined - Border border-outline-variant text-primary
-    outline: 'border border-outline overflow-hidden rounded-lg bg-surface-container-lowest text-primary hover:bg-surface-container',
+    outline:
+      'border border-outline overflow-hidden rounded-lg bg-surface-container-lowest text-primary hover:bg-surface-container',
     // Ghost - Plain background text-on-surface
     ghost: 'text-on-surface hover:bg-surface-container-low rounded-lg',
   };

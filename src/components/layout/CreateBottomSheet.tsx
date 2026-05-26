@@ -44,7 +44,9 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
 
         {/* Header content */}
         <div className="px-5 pb-4 flex items-center justify-between">
-          <h3 className="font-fraunces text-headline-md font-bold text-primary">Buat Konten Baru</h3>
+          <h3 className="font-fraunces text-headline-md font-bold text-primary">
+            Buat Konten Baru
+          </h3>
           <button
             onClick={onClose}
             className="p-1 hover:bg-surface-container rounded-full text-on-surface-variant active:scale-90 transition-all"
@@ -64,8 +66,12 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
               <ShoppingBag strokeWidth={1.5} className="w-6 h-6" />
             </div>
             <div>
-              <span className="font-fraunces text-body-md font-bold text-primary block">Jual Hasil Panen (Penawaran)</span>
-              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">Posting komoditas panen kebun yang siap kamu jual hari ini</span>
+              <span className="font-fraunces text-body-md font-bold text-primary block">
+                Jual Hasil Panen (Penawaran)
+              </span>
+              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">
+                Posting komoditas panen kebun yang siap kamu jual hari ini
+              </span>
             </div>
           </button>
 
@@ -78,8 +84,12 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
               <Search strokeWidth={1.5} className="w-6 h-6" />
             </div>
             <div>
-              <span className="font-fraunces text-body-md font-bold text-primary block">Cari Pemasok (Permintaan)</span>
-              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">Posting spesifikasi pangan yang sedang kamu cari atau butuhkan</span>
+              <span className="font-fraunces text-body-md font-bold text-primary block">
+                Cari Pemasok (Permintaan)
+              </span>
+              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">
+                Posting spesifikasi pangan yang sedang kamu cari atau butuhkan
+              </span>
             </div>
           </button>
 
@@ -92,8 +102,12 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
               <Sparkles strokeWidth={1.5} className="w-6 h-6" />
             </div>
             <div>
-              <span className="font-fraunces text-body-md font-bold text-primary block">Tulisan Cerita / Tips Kebun</span>
-              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">Bagikan rincian pembibitan organik terbaru atau kiat bertani</span>
+              <span className="font-fraunces text-body-md font-bold text-primary block">
+                Tulisan Cerita / Tips Kebun
+              </span>
+              <span className="text-body-sm text-on-surface-variant font-jakarta mt-0.5 block">
+                Bagikan rincian pembibitan organik terbaru atau kiat bertani
+              </span>
             </div>
           </button>
         </div>

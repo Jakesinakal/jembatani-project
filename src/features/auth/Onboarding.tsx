@@ -17,17 +17,20 @@ export default function Onboarding() {
     {
       title: 'Jual Hasil Panen Langsung ke Pembeli',
       desc: 'Pangkas tengkulak, dapatkan untung lebih besar dengan terhubung langsung ke restoran, katering, dan grosir besar di perkotaan.',
-      image: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=600',
+      image:
+        'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=600',
     },
     {
       title: 'Cari Komoditas Terbaik dari Sumbernya',
       desc: 'Dapatkan pasokan hasil bumi segar dengan kualitas terjamin dan sertifikasi terverifikasi langsung dari kelompok tani terpercaya.',
-      image: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=600',
+      image:
+        'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=600',
     },
     {
       title: 'Pantau Harga Komoditas Real-Time',
       desc: 'Gunakan referensi harga harian dari berbagai wilayah Jawa Barat untuk negosiasi yang adil dan keputusan jual-beli yang pintar.',
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600',
+      image:
+        'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600',
     },
   ];
 
@@ -119,7 +122,8 @@ export default function Onboarding() {
               </>
             ) : (
               <>
-                Lanjut <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                Lanjut{' '}
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
               </>
             )}
           </Button>

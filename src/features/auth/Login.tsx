@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react';
+import { Phone, Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export default function Login() {
@@ -30,12 +30,19 @@ export default function Login() {
       <div>
         {/* Header Section */}
         <div className="text-center mt-6 mb-12">
-          <span className="font-fraunces text-display-lg-mobile text-primary font-bold tracking-tight">JembaTani</span>
-          <p className="font-jakarta text-body-md text-on-surface-variant mt-2 font-medium">Log masuk untuk bergabung dalam ekosistem tani</p>
+          <span className="font-fraunces text-display-lg-mobile text-primary font-bold tracking-tight">
+            JembaTani
+          </span>
+          <p className="font-jakarta text-body-md text-on-surface-variant mt-2 font-medium">
+            Log masuk untuk bergabung dalam ekosistem tani
+          </p>
         </div>
 
         {/* Form Container */}
-        <form onSubmit={handleLogin} className="space-y-5 bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-5 bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm"
+        >
           {errorMsg && (
             <div className="text-error bg-error-container/20 border border-error-container p-3 rounded-lg text-body-sm font-semibold leading-relaxed">
               {errorMsg}
@@ -44,7 +51,9 @@ export default function Login() {
 
           {/* Email / No. HP Input */}
           <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Nomor HP atau Email</label>
+            <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+              Nomor HP atau Email
+            </label>
             <div className="relative flex items-center">
               <span className="absolute left-3.5 text-on-surface-variant">
                 <Phone strokeWidth={1.5} className="w-5 h-5" />
@@ -52,7 +61,10 @@ export default function Login() {
               <input
                 type="text"
                 value={identifier}
-                onChange={(e) => { setIdentifier(e.target.value); setErrorMsg(''); }}
+                onChange={(e) => {
+                  setIdentifier(e.target.value);
+                  setErrorMsg('');
+                }}
                 placeholder="Contoh: +628212345678 atau budi@mail.com"
                 className="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
               />
@@ -62,8 +74,15 @@ export default function Login() {
           {/* Password Input */}
           <div className="space-y-1.5">
             <div className="flex justify-between items-center">
-              <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">Kata Sandi</label>
-              <button type="button" className="text-label-md font-bold text-secondary hover:underline">Lupa password?</button>
+              <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
+                Kata Sandi
+              </label>
+              <button
+                type="button"
+                className="text-label-md font-bold text-secondary hover:underline"
+              >
+                Lupa password?
+              </button>
             </div>
             <div className="relative flex items-center">
               <span className="absolute left-3.5 text-on-surface-variant">
@@ -72,7 +91,10 @@ export default function Login() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setErrorMsg(''); }}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setErrorMsg('');
+                }}
                 placeholder="Masukkan kata sandi Anda"
                 className="w-full pl-11 pr-11 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
               />
@@ -81,7 +103,11 @@ export default function Login() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 text-on-surface-variant"
               >
-                {showPassword ? <EyeOff strokeWidth={1.5} className="w-5 h-5" /> : <Eye strokeWidth={1.5} className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff strokeWidth={1.5} className="w-5 h-5" />
+                ) : (
+                  <Eye strokeWidth={1.5} className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -90,7 +116,7 @@ export default function Login() {
           <Button type="submit" variant="primary" fullWidth className="py-3.5 shadow-md">
             Masuk Sekarang
           </Button>
-          
+
           {/* Quick Demo Bypass */}
           <button
             type="button"
@@ -103,7 +129,9 @@ export default function Login() {
 
         <div className="relative py-8 flex items-center justify-center">
           <div className="absolute inset-x-0 h-px bg-outline-variant/50" />
-          <span className="relative bg-surface px-4 text-label-md font-bold text-on-surface-variant uppercase tracking-wider font-jakarta">Atau masuk dengan</span>
+          <span className="relative bg-surface px-4 text-label-md font-bold text-on-surface-variant uppercase tracking-wider font-jakarta">
+            Atau masuk dengan
+          </span>
         </div>
 
         {/* Google Authentication Icon */}
@@ -135,7 +163,10 @@ export default function Login() {
 
       <div className="text-center font-jakarta text-body-sm mt-8 text-on-surface-variant">
         Belum punya akun?{' '}
-        <button onClick={() => navigate('/register')} className="text-secondary font-bold hover:underline">
+        <button
+          onClick={() => navigate('/register')}
+          className="text-secondary font-bold hover:underline"
+        >
           Daftar Sekarang
         </button>
       </div>

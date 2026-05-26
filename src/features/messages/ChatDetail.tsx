@@ -5,7 +5,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Phone, MoreVertical, Paperclip, Send, Camera, Check, ShieldCheck, ShoppingBag } from 'lucide-react';
+import {
+  ChevronLeft,
+  Phone,
+  MoreVertical,
+  Paperclip,
+  Send,
+  Camera,
+  Check,
+  ShieldCheck,
+} from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Avatar';
@@ -24,10 +33,15 @@ export default function ChatDetail() {
 
   const [inputText, setInputText] = useState('');
   const [negotiationStatus, setNegotiationStatus] = useState<'PENDING' | 'ACCEPTED' | 'REJECTED'>(
-    chat.negotiationInfo?.status || 'PENDING'
+    chat.negotiationInfo?.status || 'PENDING',
   );
 
-  const quickReplies = ['Siap kirim besok', 'Harga nego tipis', 'Kirim foto barang baru', 'Stok masih cukup'];
+  const quickReplies = [
+    'Siap kirim besok',
+    'Harga nego tipis',
+    'Kirim foto barang baru',
+    'Stok masih cukup',
+  ];
 
   // Scroll to bottom of chat list
   useEffect(() => {
@@ -37,7 +51,7 @@ export default function ChatDetail() {
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
     const newMsg = {
-      id: `my_msg_${Date.now()}`,
+      id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: text,
       timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
@@ -54,15 +68,18 @@ export default function ChatDetail() {
     // Simulate an automatic polite response after 1s
     setTimeout(() => {
       const partnerReplies: Record<string, string> = {
-        'Siap kirim besok': 'Terimakasih Bu Siti. Saya segera siapkan keranjang angkutannya siang ini.',
+        'Siap kirim besok':
+          'Terimakasih Bu Siti. Saya segera siapkan keranjang angkutannya siang ini.',
         'Harga nego tipis': 'Baik, silakan diajukan penawarannya di kotak tawar ya.',
-        'Kirim foto barang baru': 'Sebentar ya Bu, saya ambilkan foto cabai segar langsung dari kebun.',
-        'Stok masih cukup': 'Siap, kita langsung proses timbangannya besok pagi.'
+        'Kirim foto barang baru':
+          'Sebentar ya Bu, saya ambilkan foto cabai segar langsung dari kebun.',
+        'Stok masih cukup': 'Siap, kita langsung proses timbangannya besok pagi.',
       };
-      
-      const responseText = partnerReplies[text] || 'Ok baik Bu Siti, segera saya infokan kembali kelanjutannya.';
+
+      const responseText =
+        partnerReplies[text] || 'Ok baik Bu Siti, segera saya infokan kembali kelanjutannya.';
       const responderMsg = {
-        id: `partner_msg_${Date.now()}`,
+        id: crypto.randomUUID(),
         sender: 'PARTNER' as const,
         text: responseText,
         timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
@@ -79,10 +96,10 @@ export default function ChatDetail() {
   const handleAcceptNegotiation = () => {
     setNegotiationStatus('ACCEPTED');
     alert('Nego Harga Disetujui! Pesanan resmi dibuat.');
-    
+
     // Append transaction event message to timeline
     const systemMsg = {
-      id: `sys_msg_${Date.now()}`,
+      id: crypto.randomUUID(),
       sender: 'PARTNER' as const,
       text: `🤝 NEGOSIASI DISEPAKATI! Harga disetujui pada Rp 32.000/kg untuk 100 kg. Surat jalan pengiriman logistik sedang diproduksi.`,
       timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
@@ -102,9 +119,9 @@ export default function ChatDetail() {
     if (isNaN(offerNum)) return;
 
     alert(`Penawaran balik dikirim sebesar ${formatRupiah(offerNum)}/kg!`);
-    
+
     const myOfferMsg = {
-      id: `my_offer_msg_${Date.now()}`,
+      id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: `Saya mengajukan penawaran balik seharga ${formatRupiah(offerNum)}/kg.`,
       timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
@@ -127,21 +144,28 @@ export default function ChatDetail() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          
+
           <Avatar
             src={chat.partnerAvatar}
             name={chat.partnerName}
             size="md"
             isVerified={chat.partnerVerified}
           />
-          
+
           <div className="min-w-0">
             <div className="flex items-center gap-0.5">
-              <span className="font-jakarta font-bold text-body-sm text-on-surface leading-tight truncate">{chat.partnerName}</span>
-              {chat.partnerVerified && <span className="bg-primary text-on-primary rounded-full p-0.5 text-[5px] shrink-0"><Check className="w-1.5 h-1.5" strokeWidth={1.5} /></span>}
+              <span className="font-jakarta font-bold text-body-sm text-on-surface leading-tight truncate">
+                {chat.partnerName}
+              </span>
+              {chat.partnerVerified && (
+                <span className="bg-primary text-on-primary rounded-full p-0.5 text-[5px] shrink-0">
+                  <Check className="w-1.5 h-1.5" strokeWidth={1.5} />
+                </span>
+              )}
             </div>
             <span className="text-body-sm text-primary font-bold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-surface-tint rounded-full inline-block animate-pulse" /> Aktif Sekarang
+              <span className="w-1.5 h-1.5 bg-surface-tint rounded-full inline-block animate-pulse" />{' '}
+              Aktif Sekarang
             </span>
           </div>
         </div>
@@ -177,7 +201,8 @@ export default function ChatDetail() {
                 {chat.negotiationInfo.productName}
               </h4>
               <p className="font-jakarta text-body-sm text-on-surface-variant mt-0.5">
-                Jumlah: <b className="font-bold">{chat.negotiationInfo.quantity}</b> · Ajuan Terakhir:{' '}
+                Jumlah: <b className="font-bold">{chat.negotiationInfo.quantity}</b> · Ajuan
+                Terakhir:{' '}
                 <b className="font-bold text-secondary font-fraunces tabular-nums">
                   {formatRupiah(chat.negotiationInfo.lastPriceOffer)}
                 </b>
@@ -210,7 +235,7 @@ export default function ChatDetail() {
         {chat.messages.map((msg) => {
           const isMe = msg.sender === 'ME';
           const isSystem = msg.text.startsWith('🤝') || msg.text.startsWith('🤝 NEGOSIASI');
-          
+
           if (isSystem) {
             return (
               <div key={msg.id} className="flex justify-center my-6">
@@ -218,8 +243,12 @@ export default function ChatDetail() {
                   <div className="flex justify-center mb-1">
                     <ShieldCheck className="w-6 h-6 text-on-primary-fixed" />
                   </div>
-                  <p className="font-jakarta text-body-sm text-on-primary-fixed font-bold leading-relaxed">{msg.text}</p>
-                  <span className="text-body-sm font-jakarta text-on-primary-fixed/60 block mt-1.5">{msg.timestamp}</span>
+                  <p className="font-jakarta text-body-sm text-on-primary-fixed font-bold leading-relaxed">
+                    {msg.text}
+                  </p>
+                  <span className="text-body-sm font-jakarta text-on-primary-fixed/60 block mt-1.5">
+                    {msg.timestamp}
+                  </span>
                 </div>
               </div>
             );

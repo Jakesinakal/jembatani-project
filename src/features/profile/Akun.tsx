@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   MapPin,
@@ -13,15 +12,13 @@ import {
   UserCheck,
   CreditCard,
   FileText,
-  HelpCircle,
   LogOut,
   Sparkles,
   BookOpen,
-  FolderHeart
+  FolderHeart,
 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
 import { UserRole } from '@/types/user';
 
 export interface AkunProps {
@@ -52,8 +49,18 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
     {
       title: 'Akun & Verifikasi',
       items: [
-        { label: 'Verifikasi Identitas (KTP)', subtitle: 'Selesai diverifikasi', icon: UserCheck, isVerified: true },
-        { label: 'Verifikasi Lahan & Kebun', subtitle: 'Kelompok Tani Garut', icon: MapPin, isVerified: true },
+        {
+          label: 'Verifikasi Identitas (KTP)',
+          subtitle: 'Selesai diverifikasi',
+          icon: UserCheck,
+          isVerified: true,
+        },
+        {
+          label: 'Verifikasi Lahan & Kebun',
+          subtitle: 'Kelompok Tani Garut',
+          icon: MapPin,
+          isVerified: true,
+        },
       ],
     },
     {
@@ -61,7 +68,12 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
       items: [
         { label: 'Preferensi Notifikasi', subtitle: 'Pesan whatsapp & aplikasi', icon: Settings },
         { label: 'Bahasa', subtitle: 'Bahasa Indonesia (Default)', icon: BookOpen },
-        { label: 'Keluar Akun', subtitle: 'Log out dari perangkat ini', icon: LogOut, isDanger: true },
+        {
+          label: 'Keluar Akun',
+          subtitle: 'Log out dari perangkat ini',
+          icon: LogOut,
+          isDanger: true,
+        },
       ],
     },
   ];
@@ -95,34 +107,45 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
         <h2 className="font-fraunces text-headline-md font-bold text-primary flex items-center gap-1">
           Siti Nurhaliza
         </h2>
-        
+
         <span className="text-body-sm uppercase font-bold text-on-surface-variant font-jakarta tracking-wider flex items-center gap-0.5 mt-1">
           📍 Garut, Jawa Barat
         </span>
 
         {/* Verified labels */}
         <div className="flex gap-2 mt-3.5">
-          <Badge variant="permintaan">
-             Petani Garut
-          </Badge>
-          <Badge variant="penawaran">
-             Pembeli Aktif
-          </Badge>
+          <Badge variant="permintaan">Petani Garut</Badge>
+          <Badge variant="penawaran">Pembeli Aktif</Badge>
         </div>
 
         {/* Triple Column stats row */}
-        <div id="author-stats-columns" className="grid grid-cols-3 gap-4 w-full max-w-sm mt-6 pt-5 border-t border-outline-variant/30 text-center">
+        <div
+          id="author-stats-columns"
+          className="grid grid-cols-3 gap-4 w-full max-w-sm mt-6 pt-5 border-t border-outline-variant/30 text-center"
+        >
           <div>
-            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">1.2K</span>
-            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">Pengikut</span>
+            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
+              1.2K
+            </span>
+            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
+              Pengikut
+            </span>
           </div>
           <div className="border-x border-outline-variant/30">
-            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">340</span>
-            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">Mengikuti</span>
+            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
+              340
+            </span>
+            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
+              Mengikuti
+            </span>
           </div>
           <div>
-            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">28</span>
-            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">Postingan</span>
+            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
+              28
+            </span>
+            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
+              Postingan
+            </span>
           </div>
         </div>
       </div>
@@ -140,7 +163,7 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
           >
             🧑‍🌾 Mode Petani (Jual)
           </button>
-          
+
           <button
             onClick={() => onToggleRoleMode('PEMBELI')}
             className={`flex-1 py-3 text-label-md font-bold font-jakarta rounded-full transition-all text-center flex items-center justify-center gap-1.5 ${
@@ -182,7 +205,7 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
             </span>
 
             <div className="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
-              {section.items.map((item, idx) => {
+              {section.items.map((item, _idx) => {
                 const IconComp = item.icon;
                 return (
                   <div
@@ -191,11 +214,15 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
                     className="p-4 flex items-center justify-between border-b border-outline-variant/30 last:border-b-0 hover:bg-surface-container-low/40 active:bg-surface-container-high/40 transition-colors cursor-pointer select-none h-[64px]"
                   >
                     <div className="flex items-center gap-3.5">
-                      <div className={`p-2.5 rounded-lg ${item.isDanger ? 'bg-error-container/20 text-error' : 'bg-surface-container text-primary'}`}>
+                      <div
+                        className={`p-2.5 rounded-lg ${item.isDanger ? 'bg-error-container/20 text-error' : 'bg-surface-container text-primary'}`}
+                      >
                         <IconComp strokeWidth={1.5} className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className={`font-jakarta font-bold text-body-sm block ${item.isDanger ? 'text-secondary' : 'text-on-surface'}`}>
+                        <span
+                          className={`font-jakarta font-bold text-body-sm block ${item.isDanger ? 'text-secondary' : 'text-on-surface'}`}
+                        >
                           {item.label}
                         </span>
                         <span className="text-body-sm text-on-surface-variant font-medium block">

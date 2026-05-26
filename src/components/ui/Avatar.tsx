@@ -56,7 +56,10 @@ export function Avatar({
         <span
           id="verified-identity"
           className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-0.5 flex items-center justify-center border border-surface-container-lowest"
-          style={{ width: size === 'xl' ? '22px' : '15px', height: size === 'xl' ? '22px' : '15px' }}
+          style={{
+            width: size === 'xl' ? '22px' : '15px',
+            height: size === 'xl' ? '22px' : '15px',
+          }}
         >
           <Check strokeWidth={1.5} className={size === 'xl' ? 'w-3 h-3' : 'w-2 h-2'} />
         </span>

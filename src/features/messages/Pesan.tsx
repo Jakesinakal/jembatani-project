@@ -5,14 +5,13 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, SlidersHorizontal, MessageSquare, Check } from 'lucide-react';
+import { Search, MessageSquare, Check } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { Avatar } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
 
 export default function Pesan() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab ] = useState<'Semua' | 'Negosiasi' | 'Pesanan'>('Semua');
+  const [activeTab, setActiveTab] = useState<'Semua' | 'Negosiasi' | 'Pesanan'>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter conversations
@@ -34,7 +33,9 @@ export default function Pesan() {
       {/* Header Panel */}
       <div className="px-5 pt-6 pb-2">
         <h1 className="font-fraunces text-headline-lg font-bold text-primary mb-1">Pesan</h1>
-        <p className="font-jakarta text-body-sm text-on-surface-variant font-medium">Bahas harga, transaksi, serta logistik kiriman di sini.</p>
+        <p className="font-jakarta text-body-sm text-on-surface-variant font-medium">
+          Bahas harga, transaksi, serta logistik kiriman di sini.
+        </p>
       </div>
 
       {/* Structured Search input bar */}
@@ -65,7 +66,11 @@ export default function Pesan() {
                 : 'bg-surface-container-low text-on-surface-variant'
             }`}
           >
-            {tab === 'Semua' ? '💬 Semua Chat' : tab === 'Negosiasi' ? '🤝 Negosiasi Aktif' : '📦 Transaksi / Pesanan'}
+            {tab === 'Semua'
+              ? '💬 Semua Chat'
+              : tab === 'Negosiasi'
+                ? '🤝 Negosiasi Aktif'
+                : '📦 Transaksi / Pesanan'}
           </button>
         ))}
       </div>
@@ -75,7 +80,9 @@ export default function Pesan() {
         {filteredConversations.length === 0 ? (
           <div className="text-center py-12 p-6 bg-surface-container-low rounded-lg border border-outline-variant/40">
             <MessageSquare className="w-10 h-10 mx-auto text-on-surface-variant/40 mb-3" />
-            <p className="font-jakarta text-body-md text-on-surface-variant font-medium">Belum ada chat kategori ini.</p>
+            <p className="font-jakarta text-body-md text-on-surface-variant font-medium">
+              Belum ada chat kategori ini.
+            </p>
           </div>
         ) : (
           filteredConversations.map((chat) => (
@@ -91,11 +98,17 @@ export default function Pesan() {
                   size="lg"
                   isVerified={chat.partnerVerified}
                 />
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1 mb-1">
-                    <span className="font-jakarta font-bold text-body-sm text-on-surface">{chat.partnerName}</span>
-                    {chat.partnerVerified && <span className="bg-primary text-on-primary rounded-full p-0.5 text-[6px] shrink-0"><Check className="w-2 h-2" /></span>}
+                    <span className="font-jakarta font-bold text-body-sm text-on-surface">
+                      {chat.partnerName}
+                    </span>
+                    {chat.partnerVerified && (
+                      <span className="bg-primary text-on-primary rounded-full p-0.5 text-[6px] shrink-0">
+                        <Check className="w-2 h-2" />
+                      </span>
+                    )}
                   </div>
                   <p className="font-jakarta text-body-sm text-on-surface-variant truncate pr-2">
                     {chat.lastMessage}
@@ -104,8 +117,10 @@ export default function Pesan() {
               </div>
 
               <div className="text-right flex flex-col items-end gap-1.5 shrink-0 ml-2">
-                <span className="text-body-sm text-on-surface-variant font-jakarta">{chat.lastMessageTimestamp}</span>
-                
+                <span className="text-body-sm text-on-surface-variant font-jakarta">
+                  {chat.lastMessageTimestamp}
+                </span>
+
                 {/* Visual indicators */}
                 {chat.hasActiveNegotiation ? (
                   <span className="bg-tertiary-fixed text-on-tertiary-fixed-variant text-body-sm font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider font-jakarta">

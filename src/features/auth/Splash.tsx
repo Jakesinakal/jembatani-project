@@ -27,9 +27,11 @@ export default function Splash() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-24 h-24 bg-tertiary-fixed rounded-xl flex items-center justify-center mb-6 shadow-xl"
         >
-          <span className="font-fraunces text-numeral-xl text-on-tertiary-fixed tracking-tight">JT</span>
+          <span className="font-fraunces text-numeral-xl text-on-tertiary-fixed tracking-tight">
+            JT
+          </span>
         </motion.div>
-        
+
         <motion.h1
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -38,7 +40,7 @@ export default function Splash() {
         >
           JembaTani
         </motion.h1>
-        
+
         <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -59,7 +61,7 @@ export default function Splash() {
             className="h-full bg-tertiary-fixed-dim rounded-full relative w-1/2"
           />
         </div>
-        
+
         <span className="font-jakarta text-body-sm text-on-primary-container/60 tracking-wider">
           VERSI 1.0.0
         </span>

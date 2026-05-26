@@ -4,7 +4,13 @@
  */
 
 import { useState } from 'react';
-import { createBrowserRouter, RouterProvider, Navigate, Outlet, useOutletContext } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+  Outlet,
+  useOutletContext,
+} from 'react-router-dom';
 
 // Layout and Common UI
 import { SafeArea } from '@/components/layout/SafeArea';
@@ -60,7 +66,7 @@ function AppShell() {
           };
         }
         return p;
-      })
+      }),
     );
   };
 
