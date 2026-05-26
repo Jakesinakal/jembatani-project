@@ -186,7 +186,7 @@ export default function ChatDetail() {
 
       {/* Pinned Negotiation Card Row */}
       {chat.hasActiveNegotiation && chat.negotiationInfo && negotiationStatus === 'PENDING' && (
-        <div className="bg-tertiary-fixed/40 border-b border-outline-variant p-4 px-5 flex flex-col sm:flex-row justify-between gap-4 z-20">
+        <div className="bg-tertiary-fixed/40 border-b border-outline-variant p-4 px-5 flex flex-col gap-3 z-20">
           <div className="flex items-start gap-3">
             <img
               src={chat.negotiationInfo.productPhoto}
@@ -212,7 +212,7 @@ export default function ChatDetail() {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center justify-end shrink-0">
+          <div className="flex gap-2 items-center justify-end">
             <button
               onClick={handleTawarBalik}
               className="px-3.5 py-1.5 border border-outline text-primary font-bold text-label-md bg-surface-container-lowest hover:bg-surface-container rounded-lg active:scale-95 transition-all"
@@ -232,7 +232,7 @@ export default function ChatDetail() {
       )}
 
       {/* Chat Timeline (Timeline layout wraps the entire scrolling area) */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 pb-32">
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 pb-48">
         {chat.messages.map((msg) => {
           const isMe = msg.sender === 'ME';
           const isSystem = msg.text.startsWith('🤝') || msg.text.startsWith('🤝 NEGOSIASI');
@@ -280,7 +280,7 @@ export default function ChatDetail() {
       </div>
 
       {/* Pinned Input Accessory row with quick replies and bottom bars */}
-      <div className="absolute bottom-0 inset-x-0 bg-surface border-t border-outline-variant/60 p-4 pt-3 pb-6 z-20">
+      <div className="absolute bottom-0 inset-x-0 bg-surface border-t border-outline-variant/60 p-4 pt-3 pb-24 z-20">
         {/* Quick Replies chips row */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3">
           {quickReplies.map((reply) => (
