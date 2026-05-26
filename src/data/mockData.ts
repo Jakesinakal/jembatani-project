@@ -11,7 +11,8 @@ import { ChatConversation } from '../types/chat';
 export const mockCurrentUser: UserProfile = {
   id: 'user_me',
   name: 'Siti Nurhaliza',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+  avatar:
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
   roles: ['PETANI', 'PEMBELI'],
   currentRoleMode: 'PETANI',
   location: 'Garut, Jawa Barat',
@@ -22,16 +23,18 @@ export const mockCurrentUser: UserProfile = {
 };
 
 export const mockCommodities: CommodityPriceInfo[] = [
+  // ── SAYURAN ──────────────────────────────────────────────
   {
-    id: 'cabai_merah_keriting',
-    name: 'Cabai Merah Keriting',
+    id: 'cabai_merah',
+    name: 'Cabai Merah',
     category: 'SAYURAN',
     priceToday: 35200,
     priceYesterday: 34400,
     deltaPercent: 2.3,
     isUp: true,
     sparkline: [33000, 33200, 34000, 33800, 34100, 34400, 35200],
-    photo: 'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
+    photo:
+      'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
     unit: '/kg',
     history30Days: [
       { date: '1 Mei', price: 32000 },
@@ -40,18 +43,19 @@ export const mockCommodities: CommodityPriceInfo[] = [
       { date: '15 Mei', price: 33500 },
       { date: '20 Mei', price: 34000 },
       { date: '25 Mei', price: 35200 },
-    ]
+    ],
   },
   {
-    id: 'kentang_granola',
-    name: 'Kentang Granola',
+    id: 'kentang',
+    name: 'Kentang',
     category: 'SAYURAN',
     priceToday: 14500,
     priceYesterday: 14660,
     deltaPercent: 1.1,
     isUp: false,
     sparkline: [15000, 14900, 14800, 14750, 14700, 14660, 14500],
-    photo: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
+    photo:
+      'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
     unit: '/kg',
     history30Days: [
       { date: '1 Mei', price: 15200 },
@@ -60,18 +64,19 @@ export const mockCommodities: CommodityPriceInfo[] = [
       { date: '15 Mei', price: 14800 },
       { date: '20 Mei', price: 14660 },
       { date: '25 Mei', price: 14500 },
-    ]
+    ],
   },
   {
-    id: 'tomat_ceri',
-    name: 'Tomat Ceri Hidroponik',
+    id: 'tomat',
+    name: 'Tomat',
     category: 'SAYURAN',
     priceToday: 9800,
     priceYesterday: 9720,
     deltaPercent: 0.8,
     isUp: true,
     sparkline: [9500, 9550, 9600, 9620, 9700, 9720, 9800],
-    photo: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=400',
+    photo:
+      'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=400',
     unit: '/kg',
     history30Days: [
       { date: '1 Mei', price: 9200 },
@@ -80,118 +85,19 @@ export const mockCommodities: CommodityPriceInfo[] = [
       { date: '15 Mei', price: 9600 },
       { date: '20 Mei', price: 9720 },
       { date: '25 Mei', price: 9800 },
-    ]
+    ],
   },
   {
-    id: 'bawang_merah_brebes',
-    name: 'Bawang Merah Brebes Super',
-    category: 'REMPAH',
-    priceToday: 32000,
-    priceYesterday: 30900,
-    deltaPercent: 3.5,
-    isUp: true,
-    sparkline: [29000, 29500, 30000, 30500, 31000, 30900, 32000],
-    photo: 'https://images.unsplash.com/photo-1618228473030-a314b304c4f3?auto=format&fit=crop&q=80&w=400',
-    unit: '/kg',
-    history30Days: [
-      { date: '1 Mei', price: 28500 },
-      { date: '5 Mei', price: 29000 },
-      { date: '10 Mei', price: 30000 },
-      { date: '15 Mei', price: 30500 },
-      { date: '20 Mei', price: 30900 },
-      { date: '25 Mei', price: 32000 },
-    ]
-  },
-  {
-    id: 'beras_ir64',
-    name: 'Beras IR 64 Premium',
-    category: 'PADI',
-    priceToday: 12300,
-    priceYesterday: 12300,
-    deltaPercent: 0.0,
-    isUp: true,
-    sparkline: [12300, 12300, 12300, 12300, 12300, 12300, 12300],
-    photo: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
-    unit: '/kg',
-    history30Days: [
-      { date: '1 Mei', price: 12200 },
-      { date: '5 Mei', price: 12300 },
-      { date: '10 Mei', price: 12300 },
-      { date: '15 Mei', price: 12300 },
-      { date: '20 Mei', price: 12300 },
-      { date: '25 Mei', price: 12300 },
-    ]
-  },
-  {
-    id: 'kopi_arabika_papandayan',
-    name: 'Kopi Arabika Papandayan',
-    category: 'PERKEBUNAN',
-    priceToday: 85000,
-    priceYesterday: 84000,
-    deltaPercent: 1.19,
-    isUp: true,
-    sparkline: [82000, 82500, 83000, 83500, 84000, 84000, 85000],
-    photo: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=400',
-    unit: '/kg',
-    history30Days: [
-      { date: '1 Mei', price: 81000 },
-      { date: '5 Mei', price: 82000 },
-      { date: '10 Mei', price: 83000 },
-      { date: '15 Mei', price: 83500 },
-      { date: '20 Mei', price: 84000 },
-      { date: '25 Mei', price: 85000 },
-    ]
-  },
-  {
-    id: 'bawang_putih_honan',
-    name: 'Bawang Putih Honan',
-    category: 'REMPAH',
-    priceToday: 28500,
-    priceYesterday: 29000,
-    deltaPercent: -1.7,
-    isUp: false,
-    sparkline: [29800, 29600, 29400, 29200, 29100, 29000, 28500],
-    photo: 'https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&q=80&w=400',
-    unit: '/kg',
-    history30Days: [
-      { date: '1 Mei', price: 30000 },
-      { date: '5 Mei', price: 29700 },
-      { date: '10 Mei', price: 29500 },
-      { date: '15 Mei', price: 29200 },
-      { date: '20 Mei', price: 29000 },
-      { date: '25 Mei', price: 28500 },
-    ]
-  },
-  {
-    id: 'kopi_robusta_garut',
-    name: 'Kopi Robusta Garut',
-    category: 'PERKEBUNAN',
-    priceToday: 42000,
-    priceYesterday: 41500,
-    deltaPercent: 1.2,
-    isUp: true,
-    sparkline: [40500, 41000, 41200, 41500, 41300, 41500, 42000],
-    photo: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=400',
-    unit: '/kg',
-    history30Days: [
-      { date: '1 Mei', price: 40000 },
-      { date: '5 Mei', price: 40500 },
-      { date: '10 Mei', price: 41000 },
-      { date: '15 Mei', price: 41200 },
-      { date: '20 Mei', price: 41500 },
-      { date: '25 Mei', price: 42000 },
-    ]
-  },
-  {
-    id: 'wortel_cipanas',
-    name: 'Wortel Cipanas Super',
+    id: 'wortel',
+    name: 'Wortel',
     category: 'SAYURAN',
     priceToday: 8500,
     priceYesterday: 8700,
-    deltaPercent: -2.3,
+    deltaPercent: 2.3,
     isUp: false,
     sparkline: [9000, 8900, 8800, 8750, 8700, 8700, 8500],
-    photo: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=400',
+    photo:
+      'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=400',
     unit: '/kg',
     history30Days: [
       { date: '1 Mei', price: 9200 },
@@ -200,18 +106,62 @@ export const mockCommodities: CommodityPriceInfo[] = [
       { date: '15 Mei', price: 8800 },
       { date: '20 Mei', price: 8700 },
       { date: '25 Mei', price: 8500 },
-    ]
+    ],
   },
   {
-    id: 'mangga_harum_manis',
-    name: 'Mangga Harum Manis',
+    id: 'bayam',
+    name: 'Bayam',
+    category: 'SAYURAN',
+    priceToday: 5000,
+    priceYesterday: 4800,
+    deltaPercent: 4.2,
+    isUp: true,
+    sparkline: [4500, 4600, 4700, 4750, 4800, 4800, 5000],
+    photo:
+      'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=400',
+    unit: '/ikat',
+    history30Days: [
+      { date: '1 Mei', price: 4200 },
+      { date: '5 Mei', price: 4400 },
+      { date: '10 Mei', price: 4600 },
+      { date: '15 Mei', price: 4700 },
+      { date: '20 Mei', price: 4800 },
+      { date: '25 Mei', price: 5000 },
+    ],
+  },
+  {
+    id: 'buncis',
+    name: 'Buncis',
+    category: 'SAYURAN',
+    priceToday: 11000,
+    priceYesterday: 11500,
+    deltaPercent: 4.3,
+    isUp: false,
+    sparkline: [12000, 11900, 11800, 11700, 11600, 11500, 11000],
+    photo:
+      'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 12500 },
+      { date: '5 Mei', price: 12200 },
+      { date: '10 Mei', price: 11900 },
+      { date: '15 Mei', price: 11700 },
+      { date: '20 Mei', price: 11500 },
+      { date: '25 Mei', price: 11000 },
+    ],
+  },
+  // ── BUAH ─────────────────────────────────────────────────
+  {
+    id: 'mangga',
+    name: 'Mangga',
     category: 'BUAH',
     priceToday: 22000,
     priceYesterday: 21500,
     deltaPercent: 2.3,
     isUp: true,
     sparkline: [20000, 20500, 21000, 21200, 21500, 21500, 22000],
-    photo: 'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=400',
+    photo:
+      'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=400',
     unit: '/kg',
     history30Days: [
       { date: '1 Mei', price: 19500 },
@@ -220,7 +170,260 @@ export const mockCommodities: CommodityPriceInfo[] = [
       { date: '15 Mei', price: 21000 },
       { date: '20 Mei', price: 21500 },
       { date: '25 Mei', price: 22000 },
-    ]
+    ],
+  },
+  {
+    id: 'pisang',
+    name: 'Pisang',
+    category: 'BUAH',
+    priceToday: 12000,
+    priceYesterday: 12500,
+    deltaPercent: 4.0,
+    isUp: false,
+    sparkline: [13000, 12900, 12700, 12600, 12500, 12500, 12000],
+    photo:
+      'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&q=80&w=400',
+    unit: '/sisir',
+    history30Days: [
+      { date: '1 Mei', price: 13500 },
+      { date: '5 Mei', price: 13200 },
+      { date: '10 Mei', price: 12900 },
+      { date: '15 Mei', price: 12700 },
+      { date: '20 Mei', price: 12500 },
+      { date: '25 Mei', price: 12000 },
+    ],
+  },
+  {
+    id: 'jeruk',
+    name: 'Jeruk',
+    category: 'BUAH',
+    priceToday: 18000,
+    priceYesterday: 17500,
+    deltaPercent: 2.9,
+    isUp: true,
+    sparkline: [16500, 17000, 17200, 17300, 17500, 17500, 18000],
+    photo:
+      'https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 16000 },
+      { date: '5 Mei', price: 16500 },
+      { date: '10 Mei', price: 17000 },
+      { date: '15 Mei', price: 17200 },
+      { date: '20 Mei', price: 17500 },
+      { date: '25 Mei', price: 18000 },
+    ],
+  },
+  {
+    id: 'pepaya',
+    name: 'Pepaya',
+    category: 'BUAH',
+    priceToday: 7500,
+    priceYesterday: 7500,
+    deltaPercent: 0.0,
+    isUp: true,
+    sparkline: [7200, 7300, 7400, 7500, 7500, 7500, 7500],
+    photo:
+      'https://images.unsplash.com/photo-1526318472351-c75fcf070305?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 7000 },
+      { date: '5 Mei', price: 7200 },
+      { date: '10 Mei', price: 7300 },
+      { date: '15 Mei', price: 7400 },
+      { date: '20 Mei', price: 7500 },
+      { date: '25 Mei', price: 7500 },
+    ],
+  },
+  {
+    id: 'semangka',
+    name: 'Semangka',
+    category: 'BUAH',
+    priceToday: 6000,
+    priceYesterday: 6500,
+    deltaPercent: 7.7,
+    isUp: false,
+    sparkline: [7000, 6800, 6700, 6600, 6500, 6500, 6000],
+    photo:
+      'https://images.unsplash.com/photo-1563114773-84221bd62daa?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 7500 },
+      { date: '5 Mei', price: 7200 },
+      { date: '10 Mei', price: 7000 },
+      { date: '15 Mei', price: 6700 },
+      { date: '20 Mei', price: 6500 },
+      { date: '25 Mei', price: 6000 },
+    ],
+  },
+  // ── KOMODITAS (PADI, REMPAH, PERKEBUNAN) ─────────────────
+  {
+    id: 'beras',
+    name: 'Beras',
+    category: 'PADI',
+    priceToday: 12300,
+    priceYesterday: 12300,
+    deltaPercent: 0.0,
+    isUp: true,
+    sparkline: [12300, 12300, 12300, 12300, 12300, 12300, 12300],
+    photo:
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 12200 },
+      { date: '5 Mei', price: 12300 },
+      { date: '10 Mei', price: 12300 },
+      { date: '15 Mei', price: 12300 },
+      { date: '20 Mei', price: 12300 },
+      { date: '25 Mei', price: 12300 },
+    ],
+  },
+  {
+    id: 'jagung',
+    name: 'Jagung',
+    category: 'PADI',
+    priceToday: 5200,
+    priceYesterday: 5000,
+    deltaPercent: 4.0,
+    isUp: true,
+    sparkline: [4800, 4900, 5000, 5000, 5000, 5000, 5200],
+    photo:
+      'https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 4700 },
+      { date: '5 Mei', price: 4800 },
+      { date: '10 Mei', price: 4900 },
+      { date: '15 Mei', price: 5000 },
+      { date: '20 Mei', price: 5000 },
+      { date: '25 Mei', price: 5200 },
+    ],
+  },
+  {
+    id: 'bawang_merah',
+    name: 'Bawang Merah',
+    category: 'REMPAH',
+    priceToday: 32000,
+    priceYesterday: 30900,
+    deltaPercent: 3.5,
+    isUp: true,
+    sparkline: [29000, 29500, 30000, 30500, 31000, 30900, 32000],
+    photo:
+      'https://images.unsplash.com/photo-1618228473030-a314b304c4f3?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 28500 },
+      { date: '5 Mei', price: 29000 },
+      { date: '10 Mei', price: 30000 },
+      { date: '15 Mei', price: 30500 },
+      { date: '20 Mei', price: 30900 },
+      { date: '25 Mei', price: 32000 },
+    ],
+  },
+  {
+    id: 'bawang_putih',
+    name: 'Bawang Putih',
+    category: 'REMPAH',
+    priceToday: 28500,
+    priceYesterday: 29000,
+    deltaPercent: 1.7,
+    isUp: false,
+    sparkline: [29800, 29600, 29400, 29200, 29100, 29000, 28500],
+    photo:
+      'https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 30000 },
+      { date: '5 Mei', price: 29700 },
+      { date: '10 Mei', price: 29500 },
+      { date: '15 Mei', price: 29200 },
+      { date: '20 Mei', price: 29000 },
+      { date: '25 Mei', price: 28500 },
+    ],
+  },
+  {
+    id: 'jahe',
+    name: 'Jahe',
+    category: 'REMPAH',
+    priceToday: 15000,
+    priceYesterday: 14500,
+    deltaPercent: 3.4,
+    isUp: true,
+    sparkline: [13500, 13800, 14000, 14200, 14500, 14500, 15000],
+    photo:
+      'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 13000 },
+      { date: '5 Mei', price: 13500 },
+      { date: '10 Mei', price: 14000 },
+      { date: '15 Mei', price: 14200 },
+      { date: '20 Mei', price: 14500 },
+      { date: '25 Mei', price: 15000 },
+    ],
+  },
+  {
+    id: 'kopi_arabika',
+    name: 'Kopi Arabika',
+    category: 'PERKEBUNAN',
+    priceToday: 85000,
+    priceYesterday: 84000,
+    deltaPercent: 1.2,
+    isUp: true,
+    sparkline: [82000, 82500, 83000, 83500, 84000, 84000, 85000],
+    photo:
+      'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 81000 },
+      { date: '5 Mei', price: 82000 },
+      { date: '10 Mei', price: 83000 },
+      { date: '15 Mei', price: 83500 },
+      { date: '20 Mei', price: 84000 },
+      { date: '25 Mei', price: 85000 },
+    ],
+  },
+  {
+    id: 'kopi_robusta',
+    name: 'Kopi Robusta',
+    category: 'PERKEBUNAN',
+    priceToday: 42000,
+    priceYesterday: 41500,
+    deltaPercent: 1.2,
+    isUp: true,
+    sparkline: [40500, 41000, 41200, 41500, 41300, 41500, 42000],
+    photo:
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 40000 },
+      { date: '5 Mei', price: 40500 },
+      { date: '10 Mei', price: 41000 },
+      { date: '15 Mei', price: 41200 },
+      { date: '20 Mei', price: 41500 },
+      { date: '25 Mei', price: 42000 },
+    ],
+  },
+  {
+    id: 'kelapa_sawit',
+    name: 'Kelapa Sawit',
+    category: 'PERKEBUNAN',
+    priceToday: 2800,
+    priceYesterday: 2750,
+    deltaPercent: 1.8,
+    isUp: true,
+    sparkline: [2600, 2650, 2700, 2720, 2750, 2750, 2800],
+    photo:
+      'https://images.unsplash.com/photo-1611095787215-4b5b5e6c8bfa?auto=format&fit=crop&q=80&w=400',
+    unit: '/kg',
+    history30Days: [
+      { date: '1 Mei', price: 2550 },
+      { date: '5 Mei', price: 2600 },
+      { date: '10 Mei', price: 2650 },
+      { date: '15 Mei', price: 2700 },
+      { date: '20 Mei', price: 2750 },
+      { date: '25 Mei', price: 2800 },
+    ],
   },
 ];
 
@@ -230,7 +433,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'farmer_budi',
       name: 'Pak Budi',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
       location: 'Garut, Jawa Barat',
       isVerified: true,
     },
@@ -241,11 +445,13 @@ export const mockPosts: Post[] = [
     minOrderRetail: '1 kg',
     minOrderB2B: '50 kg',
     stockAvailable: '750 kg',
-    photoUrl: 'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
     location: 'Kabupaten Garut, Jawa Barat',
     harvestOrNeededDate: '28 Mei 2026',
     certifications: ['ORGANIK', 'BEBAS PESTISIDA'],
-    caption: 'Hasil panen melimpah kebun sendiri di lereng Gunung Cikuray. Cabai merah keriting mulus panjang optimal 12-15cm, pedas maksimal, dipetik di hari pengiriman.',
+    caption:
+      'Hasil panen melimpah kebun sendiri di lereng Gunung Cikuray. Cabai merah keriting mulus panjang optimal 12-15cm, pedas maksimal, dipetik di hari pengiriman.',
     likesCount: 142,
     commentsCount: 24,
     sharesCount: 12,
@@ -257,7 +463,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'buyer_siti',
       name: 'Bu Lilis Sembako',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
       location: 'Bandung, Jawa Barat',
       isVerified: true,
     },
@@ -269,11 +476,13 @@ export const mockPosts: Post[] = [
     minOrderB2B: '200 kg',
     quantityNeeded: '2 Ton',
     budgetPrice: 13500,
-    photoUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
     location: 'Pasar Baru, Bandung',
     harvestOrNeededDate: '30 Mei 2026',
     certifications: ['GRADE SUPER'],
-    caption: 'Dibutuhkan suplai kentang granola berkala sebanyak 2 Ton per minggu untuk jaringan katering dan restoran di Bandung. Pembayaran cash di tempat, butuh yang ukuran sedang-besar merata.',
+    caption:
+      'Dibutuhkan suplai kentang granola berkala sebanyak 2 Ton per minggu untuk jaringan katering dan restoran di Bandung. Pembayaran cash di tempat, butuh yang ukuran sedang-besar merata.',
     likesCount: 88,
     commentsCount: 31,
     sharesCount: 8,
@@ -285,7 +494,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'farmer_joko',
       name: 'Pak Joko Dieng',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
       location: 'Wonosobo, Jawa Tengah',
       isVerified: true,
     },
@@ -296,11 +506,13 @@ export const mockPosts: Post[] = [
     minOrderRetail: '5 kg',
     minOrderB2B: '100 kg',
     stockAvailable: '1.5 Ton',
-    photoUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400',
     location: 'Wonosobo, Jawa Tengah',
     harvestOrNeededDate: 'Siap Kirim',
     certifications: ['GAP CERTIFIED'],
-    caption: 'Kentang Granola ditanam di ketinggian Dieng Plateau. Tanah vulkanis subur menghasilkan kentang yang padat kandungan patinya tinggi, dan tidak cepat busuk.',
+    caption:
+      'Kentang Granola ditanam di ketinggian Dieng Plateau. Tanah vulkanis subur menghasilkan kentang yang padat kandungan patinya tinggi, dan tidak cepat busuk.',
     likesCount: 95,
     commentsCount: 15,
     sharesCount: 5,
@@ -312,7 +524,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'buyer_catering',
       name: 'Restaurant Sambal Bakar',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
       location: 'Jakarta Barat',
       isVerified: true,
     },
@@ -324,11 +537,13 @@ export const mockPosts: Post[] = [
     minOrderB2B: '100 kg',
     quantityNeeded: '500 kg',
     budgetPrice: 10000,
-    photoUrl: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=400',
     location: 'Jakarta Barat',
     harvestOrNeededDate: 'Segera',
     certifications: ['PREFERABLY ORGANIK'],
-    caption: 'Butuh tomat ceri merah ranum yang manis asamnya stabil untuk dijadikan pelengkap sambal bakar spesial kami. Pengiriman langsung ke gudang kami di Cengkareng.',
+    caption:
+      'Butuh tomat ceri merah ranum yang manis asamnya stabil untuk dijadikan pelengkap sambal bakar spesial kami. Pengiriman langsung ke gudang kami di Cengkareng.',
     likesCount: 42,
     commentsCount: 12,
     sharesCount: 4,
@@ -340,7 +555,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'farmer_wawan',
       name: 'Pak Wawan Cianjur',
-      avatar: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
       location: 'Cianjur, Jawa Barat',
       isVerified: true,
     },
@@ -351,11 +567,13 @@ export const mockPosts: Post[] = [
     minOrderRetail: '5 kg',
     minOrderB2B: '50 kg',
     stockAvailable: '3 Ton',
-    photoUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
     location: 'Waru Kondang, Cianjur',
     harvestOrNeededDate: 'Panen Kemarin',
     certifications: ['ORGANIK INDONESIA', 'KUALITAS EKSPOR'],
-    caption: 'Beras asli Pandanwangi Cianjur dengan bulir bulat pendek khas aroma harum pandan sejati. Nasi pulen legit sekali dicicipi ketagihan. Bebas pewarna dan pengawet buatan.',
+    caption:
+      'Beras asli Pandanwangi Cianjur dengan bulir bulat pendek khas aroma harum pandan sejati. Nasi pulen legit sekali dicicipi ketagihan. Bebas pewarna dan pengawet buatan.',
     likesCount: 204,
     commentsCount: 38,
     sharesCount: 29,
@@ -367,7 +585,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'buyer_pabrik',
       name: 'PT Jera Soya Sambal',
-      avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=200',
       location: 'Karawang, Jawa Barat',
       isVerified: true,
     },
@@ -379,11 +598,13 @@ export const mockPosts: Post[] = [
     minOrderB2B: '1 Ton',
     quantityNeeded: '10 Ton',
     budgetPrice: 45000,
-    photoUrl: 'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
     location: 'Kawasan Industri Karawang',
     harvestOrNeededDate: 'Juni 2026',
     certifications: ['STANDAR PABRIK', 'GAP'],
-    caption: 'Dibutuhkan kerja sama jangka panjang dengan gabungan kelompok tani (Gapoktan) untuk pasokan cabai rawit merah pedas standar pabrik saus. Silakan tawarkan kerja sama resmi Anda.',
+    caption:
+      'Dibutuhkan kerja sama jangka panjang dengan gabungan kelompok tani (Gapoktan) untuk pasokan cabai rawit merah pedas standar pabrik saus. Silakan tawarkan kerja sama resmi Anda.',
     likesCount: 110,
     commentsCount: 45,
     sharesCount: 18,
@@ -395,7 +616,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'farmer_kadek',
       name: 'Bli Kadek Kopi',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200',
       location: 'Kintamani, Bali',
       isVerified: true,
     },
@@ -406,11 +628,13 @@ export const mockPosts: Post[] = [
     minOrderRetail: '1 kg',
     minOrderB2B: '25 kg',
     stockAvailable: '400 kg',
-    photoUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=400',
     location: 'Kintamani, Bangli, Bali',
     harvestOrNeededDate: 'Dry-hulled Mei',
     certifications: ['GEOGRAPHICAL INDICATION'],
-    caption: 'Green beans Kopi Arabika Kintamani Bali. Diproses basah (fully washed) menghasilkan notes buah jeruk (citrus/orange notes) berseri bersih dan keasaman seimbang.',
+    caption:
+      'Green beans Kopi Arabika Kintamani Bali. Diproses basah (fully washed) menghasilkan notes buah jeruk (citrus/orange notes) berseri bersih dan keasaman seimbang.',
     likesCount: 130,
     commentsCount: 19,
     sharesCount: 22,
@@ -422,7 +646,8 @@ export const mockPosts: Post[] = [
     author: {
       id: 'buyer_grosir_caringin',
       name: 'Haji Ahmad Caringin',
-      avatar: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
+      avatar:
+        'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
       location: 'Bandung, Jawa Barat',
       isVerified: true,
     },
@@ -434,11 +659,13 @@ export const mockPosts: Post[] = [
     minOrderB2B: '1 Ton',
     quantityNeeded: '5 Ton/Hari',
     budgetPrice: 27000,
-    photoUrl: 'https://images.unsplash.com/photo-1618228473030-a314b304c4f3?auto=format&fit=crop&q=80&w=400',
+    photoUrl:
+      'https://images.unsplash.com/photo-1618228473030-a314b304c4f3?auto=format&fit=crop&q=80&w=400',
     location: 'Pasar Induk Caringin, Bandung',
     harvestOrNeededDate: 'Setiap Hari',
     certifications: ['KONDISI KERING'],
-    caption: 'Lapal kami di Pasar Induk Caringin menerima suplai rutin bawang merah harian dari Brebes, Demak maupun lokal Jabar. Timbangan murni, bayar tunai di jembatan timbang pasar lumpur.',
+    caption:
+      'Lapal kami di Pasar Induk Caringin menerima suplai rutin bawang merah harian dari Brebes, Demak maupun lokal Jabar. Timbangan murni, bayar tunai di jembatan timbang pasar lumpur.',
     likesCount: 64,
     commentsCount: 8,
     sharesCount: 3,
@@ -451,7 +678,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_1',
     partnerName: 'Pak Budi',
-    partnerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
     partnerVerified: true,
     lastMessage: 'Bagaimana Pak, apakah harga Rp 32.000/kg bisa disetujui?',
     lastMessageTimestamp: '10:15',
@@ -459,7 +687,8 @@ export const mockChats: ChatConversation[] = [
     hasActiveNegotiation: true,
     negotiationInfo: {
       productName: 'Cabai Merah Keriting Grade A',
-      productPhoto: 'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
+      productPhoto:
+        'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
       quantity: '100 kg',
       lastPriceOffer: 32000,
       originalPrice: 35000,
@@ -501,7 +730,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_2',
     partnerName: 'Haji Ahmad Caringin',
-    partnerAvatar: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200',
     partnerVerified: true,
     lastMessage: 'Ok siap, saya tunggu pengiriman bawang merahnya besok pagi di lapak 4B.',
     lastMessageTimestamp: 'Selesai',
@@ -525,7 +755,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_3',
     partnerName: 'Bu Lilis Sembako',
-    partnerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
     partnerVerified: true,
     lastMessage: 'Apakah kentangnya boleh dipilih yang ukuran besar saja?',
     lastMessageTimestamp: 'Kamis',
@@ -543,7 +774,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_4',
     partnerName: 'Restaurant Sambal Bakar',
-    partnerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
     partnerVerified: false,
     lastMessage: 'Besok tim kami tawar balik ya mbak, mau cek kualitas dulu.',
     lastMessageTimestamp: '25 Mei',
@@ -561,7 +793,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_5',
     partnerName: 'Pak Joko Dieng',
-    partnerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
     partnerVerified: true,
     lastMessage: 'Stok kentang granola melimpah Bu Siti, bisa langsung diorder.',
     lastMessageTimestamp: '24 Mei',
@@ -579,7 +812,8 @@ export const mockChats: ChatConversation[] = [
   {
     id: 'chat_6',
     partnerName: 'Bu Siti Sukasari',
-    partnerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+    partnerAvatar:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
     partnerVerified: false,
     lastMessage: 'Beras IR 64 kami kirim pakai truk lusa ya Bu.',
     lastMessageTimestamp: '20 Mei',
