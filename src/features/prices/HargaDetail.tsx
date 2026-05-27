@@ -4,11 +4,12 @@
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Share2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Share2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { mockCommodities } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
 import { MARKET_COMPARISONS } from '@/lib/constants';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/layout/PageHeader';
 
 export default function HargaDetail() {
   const { commodityId } = useParams<{ commodityId: string }>();
@@ -167,22 +168,18 @@ export default function HargaDetail() {
 
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
-      {/* Top Header Row */}
-      <div className="sticky top-0 bg-surface/90 backdrop-blur-md z-30 px-5 py-4 flex items-center justify-between border-b border-outline-variant/50">
-        <button
-          onClick={() => navigate('/harga')}
-          className="p-1.5 hover:bg-surface-container rounded-full text-primary active:scale-95 transition-all"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <span className="font-fraunces text-body-lg font-bold text-primary">Detail Tren Harga</span>
-        <button
-          onClick={() => alert('Link tren dibagikan ke WhatsApp!')}
-          className="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors"
-        >
-          <Share2 className="w-5 h-5" />
-        </button>
-      </div>
+      <PageHeader
+        title="Detail Tren Harga"
+        onBack={() => navigate('/harga')}
+        rightAction={
+          <button
+            onClick={() => alert('Link tren dibagikan ke WhatsApp!')}
+            className="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors"
+          >
+            <Share2 className="w-5 h-5" />
+          </button>
+        }
+      />
 
       {/* Hero card information panel */}
       <div className="px-5 mt-6">

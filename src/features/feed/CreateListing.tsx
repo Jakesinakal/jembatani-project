@@ -5,11 +5,13 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, UploadCloud, MapPin, Check } from 'lucide-react';
+import { UploadCloud, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Post, PostType } from '@/types/post';
 import { CERTIFICATE_OPTIONS } from '@/lib/constants';
 import { toggleItem } from '@/lib/utils';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { FormField } from '@/components/ui/FormField';
 
 export interface CreateListingProps {
   onAddPost: (post: Post) => void;
@@ -107,19 +109,10 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
 
   return (
     <div className="flex-1 pb-28 bg-surface text-on-surface">
-      {/* Stick Header row */}
-      <div className="sticky top-0 bg-surface/90 backdrop-blur-md z-30 px-5 py-4 flex items-center justify-between border-b border-outline-variant/50">
-        <button
-          onClick={() => navigate('/beranda')}
-          className="p-1.5 hover:bg-surface-container rounded-full text-primary active:scale-95 transition-all"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <span className="font-fraunces text-body-lg font-bold text-primary">
-          Buat {listingType === 'PENAWARAN' ? 'Penawaran' : 'Permintaan'}
-        </span>
-        <span className="w-6 shrink-0" /> {/* horizontal spacer */}
-      </div>
+      <PageHeader
+        title={`Buat ${listingType === 'PENAWARAN' ? 'Penawaran' : 'Permintaan'}`}
+        onBack={() => navigate('/beranda')}
+      />
 
       <form onSubmit={handlePublish} className="px-5 mt-6 space-y-6">
         {/* Section 1: Photo grid uploader */}
@@ -166,10 +159,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
 
         {/* Section 2: Commodity selector dropdown & custom title */}
         <div className="space-y-4 bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/60 shadow-sm">
-          <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-              Nama Komoditas
-            </label>
+          <FormField label="Nama Komoditas">
             <select
               value={commodity}
               onChange={(e) => setCommodity(e.target.value)}
@@ -182,12 +172,9 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
               <option value="Beras IR64">🌾 Beras IR64 Premium</option>
               <option value="Kopi Arabika">☕ Kopi Arabika Papandayan</option>
             </select>
-          </div>
+          </FormField>
 
-          <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-              Judul Postingan (Opsional)
-            </label>
+          <FormField label="Judul Postingan (Opsional)">
             <input
               type="text"
               value={customTitle}
@@ -195,7 +182,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
               placeholder="Contoh: Cabai Cikuray Besar Segar Mulus"
               className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded focus:border-primary text-body-md outline-none font-jakarta"
             />
-          </div>
+          </FormField>
         </div>
 
         {/* Section 3: Grade & Condition Chips */}
@@ -248,10 +235,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
         {/* Section 4: Pricing & Inventory */}
         <div className="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/60 shadow-sm space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-                Satuan Takar
-              </label>
+            <FormField label="Satuan Takar">
               <select
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
@@ -262,25 +246,23 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
                 <option value="karung">karung</option>
                 <option value="kotak">kotak</option>
               </select>
-            </div>
+            </FormField>
 
-            <div className="space-y-1.5">
-              <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-                {listingType === 'PENAWARAN' ? 'Stok Tersedia' : 'Jumlah Kebutuhan'}
-              </label>
+            <FormField label={listingType === 'PENAWARAN' ? 'Stok Tersedia' : 'Jumlah Kebutuhan'}>
               <input
                 type="number"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
                 className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded focus:border-primary text-body-md outline-none font-jakarta"
               />
-            </div>
+            </FormField>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-              {listingType === 'PENAWARAN' ? 'Patokan Harga (Rupiah)' : 'Anggaran Maks (Rupiah)'}
-            </label>
+          <FormField
+            label={
+              listingType === 'PENAWARAN' ? 'Patokan Harga (Rupiah)' : 'Anggaran Maks (Rupiah)'
+            }
+          >
             <div className="relative flex items-center">
               <span className="absolute left-4 font-fraunces font-bold text-secondary text-body-lg tabular-nums">
                 Rp
@@ -295,7 +277,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
                 /{unit}
               </span>
             </div>
-          </div>
+          </FormField>
         </div>
 
         {/* Section 5: B2C/B2B Checkboxes & Toggles */}
@@ -397,10 +379,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
             </button>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-              Tanggal Panen / Siap Kirim
-            </label>
+          <FormField label="Tanggal Panen / Siap Kirim">
             <input
               type="text"
               value={date}
@@ -408,15 +387,12 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
               placeholder="Contoh: 30 Mei 2026 atau Panen Kemarin"
               className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded focus:border-primary text-body-md outline-none font-jakarta"
             />
-          </div>
+          </FormField>
         </div>
 
         {/* Section 7: Description & Certification Chips */}
         <div className="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/60 shadow-sm space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">
-              Deskripsi Hasil Kebun / Permintaan
-            </label>
+          <FormField label="Deskripsi Hasil Kebun / Permintaan">
             <textarea
               rows={4}
               value={desc}
@@ -424,7 +400,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
               placeholder="Jelaskan kualitas, warna cabai, sistem pemupukan, rasa manis tomat, atau spesifikasi logistik kiriman..."
               className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded focus:border-primary text-body-sm outline-none font-jakarta resize-none leading-relaxed"
             />
-          </div>
+          </FormField>
 
           <div className="space-y-2.5">
             <span className="text-label-md font-bold text-on-surface uppercase tracking-wider font-jakarta block">

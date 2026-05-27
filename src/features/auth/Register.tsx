@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { UserRole } from '@/types/user';
 import { CROPS_LIST } from '@/lib/constants';
 import { toggleItem } from '@/lib/utils';
+import { FormField } from '@/components/ui/FormField';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -133,10 +134,7 @@ export default function Register() {
             </div>
 
             <div className="space-y-4 bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/60 shadow-sm">
-              <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                  Nama Lengkap
-                </label>
+              <FormField label="Nama Lengkap">
                 <input
                   type="text"
                   value={fullName}
@@ -144,12 +142,9 @@ export default function Register() {
                   placeholder="Contoh: Pak Budi Setiawan"
                   className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
                 />
-              </div>
+              </FormField>
 
-              <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                  Nomor HP (WhatsApp)
-                </label>
+              <FormField label="Nomor HP (WhatsApp)">
                 <input
                   type="text"
                   value={phone}
@@ -157,12 +152,9 @@ export default function Register() {
                   placeholder="Contoh: 08212345678"
                   className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
                 />
-              </div>
+              </FormField>
 
-              <div className="space-y-1.5">
-                <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                  Email (Opsional)
-                </label>
+              <FormField label="Email (Opsional)">
                 <input
                   type="email"
                   value={email}
@@ -170,13 +162,10 @@ export default function Register() {
                   placeholder="budi@mail.com"
                   className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
                 />
-              </div>
+              </FormField>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                    Kata Sandi
-                  </label>
+                <FormField label="Kata Sandi">
                   <input
                     type="password"
                     value={password}
@@ -184,11 +173,8 @@ export default function Register() {
                     placeholder="Minimal 6 karakter"
                     className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
                   />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-                    Ulangi Kata Sandi
-                  </label>
+                </FormField>
+                <FormField label="Ulangi Kata Sandi">
                   <input
                     type="password"
                     value={confirmPassword}
@@ -196,7 +182,7 @@ export default function Register() {
                     placeholder="Masukkan ulang kata sandi"
                     className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
                   />
-                </div>
+                </FormField>
               </div>
             </div>
           </div>
