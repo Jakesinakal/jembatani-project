@@ -47,9 +47,11 @@ All styling must follow `docs/design-tokens.md` — the single source of truth f
 
 `AppShellContext` is exported from `App.tsx` — import it from there when adding new wrapper components.
 
-Each authenticated screen requiring shared state uses a wrapper component (e.g., `BerandaWrapper`, `AkunWrapper`) to extract the context and forward typed props. This avoids prop-drilling through the router layer.
+Each authenticated screen requiring shared state uses a wrapper component (`BerandaWrapper`, `AkunWrapper`, `CreateListingWrapper`) to extract the context and forward typed props. This avoids prop-drilling through the router layer.
 
 ### Feature Screens (`src/features/`)
+
+Screens are organized into subdirectories by domain: `auth/`, `feed/`, `messages/`, `prices/`, `profile/`.
 
 | Route                 | Screen          | Purpose                                                                                                          |
 | --------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -67,14 +69,14 @@ All app state lives in `AppShell` (no external store). `currentRoleMode` (`UserR
 
 ### Data Layer
 
-All data is currently mocked: `src/data/mockData.ts` exports `mockPosts` (Post[]) and `mockCommodities` (CommodityPriceInfo[]). There is no backend API integration yet — the `GEMINI_API_KEY` / `@google/genai` dependency exists for planned AI features.
+All data is currently mocked: `src/data/mockData.ts` exports `mockPosts` (Post[]), `mockCommodities` (CommodityPriceInfo[]), `mockChats` (ChatConversation[]), and `mockCurrentUser` (UserProfile). There is no backend API integration yet — Supabase is planned for the backend; the `GEMINI_API_KEY` / `@google/genai` dependency exists for planned AI features.
 
 ### Types (`src/types/`)
 
 - `user.ts` — `UserRole` (`'PETANI' | 'PEMBELI'`), `UserProfile`
 - `post.ts` — `Post`, `PostAuthor`, `PostType` (`'PENAWARAN' | 'PERMINTAAN'`)
 - `commodity.ts` — `CommodityPriceInfo`, `CommodityCategory` (`'SAYURAN' | 'BUAH' | 'PADI' | 'REMPAH' | 'PERKEBUNAN'`)
-- `chat.ts` — chat-related types
+- `chat.ts` — `NegotiationStatus` (`'PENDING' | 'ACCEPTED' | 'REJECTED'`), `NegotiationDetails`, `ChatMessage`, `ChatConversation`
 
 ### Styling & Key Libraries
 
