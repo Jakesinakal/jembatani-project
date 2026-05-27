@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UploadCloud, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Post, PostType } from '@/types/post';
+import { mockCurrentUser } from '@/data/mockData';
 import { CERTIFICATE_OPTIONS } from '@/lib/constants';
 import { toggleItem } from '@/lib/utils';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -60,12 +61,11 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
     const newPost = {
       id: crypto.randomUUID(),
       author: {
-        id: 'user_me',
-        name: 'Siti Nurhaliza',
-        avatar:
-          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-        location: 'Garut, Jawa Barat',
-        isVerified: true,
+        id: mockCurrentUser.id,
+        name: mockCurrentUser.name,
+        avatar: mockCurrentUser.avatar,
+        location: mockCurrentUser.location,
+        isVerified: mockCurrentUser.isVerified,
       },
       type: listingType,
       title: finalTitle,

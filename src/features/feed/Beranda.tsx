@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatRupiah, formatRelativeTime } from '@/lib/utils';
+import { mockCommodities } from '@/data/mockData';
 import { Post } from '@/types/post';
 import { UserRole } from '@/types/user';
 
@@ -31,14 +32,16 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
   const [notifCount, setNotifCount] = useState(3);
 
   // Commodity ticker tape data
-  const tickerItems = [
-    { name: 'Cabai Merah', price: 35200, percent: '2.3%', isUp: true },
-    { name: 'Kentang', price: 14500, percent: '1.1%', isUp: false },
-    { name: 'Tomat Ceri', price: 9800, percent: '0.8%', isUp: true },
-    { name: 'Bawang Merah', price: 32000, percent: '3.5%', isUp: true },
-    { name: 'Beras IR64', price: 12300, percent: '0.0%', isUp: true, isFlat: true },
-    { name: 'Kopi Arabika', price: 85000, percent: '1.2%', isUp: true },
-  ];
+  const TICKER_IDS = ['cabai_merah', 'kentang', 'tomat', 'bawang_merah', 'beras', 'kopi_arabika'];
+  const tickerItems = TICKER_IDS.map((id) => mockCommodities.find((c) => c.id === id)!).map(
+    (c) => ({
+      name: c.name,
+      price: c.priceToday,
+      percent: `${c.deltaPercent.toFixed(1)}%`,
+      isUp: c.isUp,
+      isFlat: c.deltaPercent === 0,
+    }),
+  );
 
   // Filtering posts based on chips + search query
   const filteredPosts = posts.filter((post) => {
