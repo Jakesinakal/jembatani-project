@@ -5,18 +5,12 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Search,
-  Bell,
-  Heart,
-  MessageCircle,
-  Share2,
-  CheckCircle,
-  SlidersHorizontal,
-} from 'lucide-react';
+import { Search, Bell, Heart, MessageCircle, Share2, SlidersHorizontal } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { formatRupiah, formatRelativeTime } from '@/lib/utils';
 import { Post } from '@/types/post';
 import { UserRole } from '@/types/user';
@@ -210,12 +204,10 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
       {/* Feed Listing Cards Container */}
       <div id="opportunity-feed-stack" className="px-5 mt-6 space-y-6">
         {filteredPosts.length === 0 ? (
-          <div className="text-center py-12 p-6 bg-surface-container-low rounded-lg border border-outline-variant/40">
-            <SlidersHorizontal className="w-10 h-10 mx-auto text-on-surface-variant/40 mb-3" />
-            <p className="font-jakarta text-body-md text-on-surface-variant font-medium">
-              Tidak ada hasil yang sesuai filter pencarian.
-            </p>
-          </div>
+          <EmptyState
+            icon={SlidersHorizontal}
+            message="Tidak ada hasil yang sesuai filter pencarian."
+          />
         ) : (
           filteredPosts.map((post) => {
             const isPenawaran = post.type === 'PENAWARAN';
@@ -239,9 +231,7 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
                         <span className="font-jakarta font-bold text-label-md text-on-surface">
                           {post.author.name}
                         </span>
-                        {post.author.isVerified && (
-                          <CheckCircle className="w-3.5 h-3.5 text-primary fill-primary-fixed" />
-                        )}
+                        {post.author.isVerified && <VerifiedBadge size="sm" />}
                       </div>
                       <span className="text-body-sm text-on-surface-variant font-medium flex items-center gap-0.5">
                         📍 {post.author.location}

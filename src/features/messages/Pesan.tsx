@@ -5,9 +5,11 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MessageSquare, Check } from 'lucide-react';
+import { Search, MessageSquare } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { Avatar } from '@/components/ui/Avatar';
+import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function Pesan() {
   const navigate = useNavigate();
@@ -78,12 +80,7 @@ export default function Pesan() {
       {/* Vertical List of Chat items (6 chats) */}
       <div id="messages-list-stack" className="px-5 mt-6 space-y-3">
         {filteredConversations.length === 0 ? (
-          <div className="text-center py-12 p-6 bg-surface-container-low rounded-lg border border-outline-variant/40">
-            <MessageSquare className="w-10 h-10 mx-auto text-on-surface-variant/40 mb-3" />
-            <p className="font-jakarta text-body-md text-on-surface-variant font-medium">
-              Belum ada chat kategori ini.
-            </p>
-          </div>
+          <EmptyState icon={MessageSquare} message="Belum ada chat kategori ini." />
         ) : (
           filteredConversations.map((chat) => (
             <div
@@ -104,11 +101,7 @@ export default function Pesan() {
                     <span className="font-jakarta font-bold text-body-sm text-on-surface">
                       {chat.partnerName}
                     </span>
-                    {chat.partnerVerified && (
-                      <span className="bg-primary text-on-primary rounded-full p-0.5 text-[6px] shrink-0">
-                        <Check className="w-2 h-2" />
-                      </span>
-                    )}
+                    {chat.partnerVerified && <VerifiedBadge size="sm" />}
                   </div>
                   <p className="font-jakarta text-body-sm text-on-surface-variant truncate pr-2">
                     {chat.lastMessage}

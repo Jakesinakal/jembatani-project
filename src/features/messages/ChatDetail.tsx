@@ -21,6 +21,7 @@ import { QUICK_REPLIES } from '@/lib/constants';
 import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
+import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 
 export default function ChatDetail() {
   const { chatId } = useParams<{ chatId: string }>();
@@ -152,11 +153,7 @@ export default function ChatDetail() {
               <span className="font-jakarta font-bold text-body-sm text-on-surface leading-tight truncate">
                 {chat.partnerName}
               </span>
-              {chat.partnerVerified && (
-                <span className="bg-primary text-on-primary rounded-full p-0.5 text-[5px] shrink-0">
-                  <Check className="w-1.5 h-1.5" strokeWidth={1.5} />
-                </span>
-              )}
+              {chat.partnerVerified && <VerifiedBadge size="xs" />}
             </div>
             <span className="text-body-sm text-primary font-bold flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-surface-tint rounded-full inline-block animate-pulse" />{' '}
