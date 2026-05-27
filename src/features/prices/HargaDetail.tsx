@@ -7,6 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Share2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { mockCommodities } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
+import { MARKET_COMPARISONS } from '@/lib/constants';
 import { Button } from '@/components/ui/Button';
 
 export default function HargaDetail() {
@@ -164,13 +165,6 @@ export default function HargaDetail() {
     );
   };
 
-  const marketComparisons = [
-    { market: 'Pasar Induk Caringin, Bandung', price: item.priceToday - 300, term: 'Borongan' },
-    { market: 'Pasar Induk Kramat Jati, Jakarta', price: item.priceToday + 1200, term: 'Borongan' },
-    { market: 'Pasar Kemiri, Depok', price: item.priceToday + 2400, term: 'Eceran' },
-    { market: 'Pasar Induk Johar, Karawang', price: item.priceToday + 400, term: 'Borongan' },
-  ];
-
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
       {/* Top Header Row */}
@@ -260,7 +254,7 @@ export default function HargaDetail() {
           Banding Harga Pasar Induk
         </h3>
         <div className="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
-          {marketComparisons.map((comp, idx) => (
+          {MARKET_COMPARISONS.map((comp, idx) => (
             <div
               key={idx}
               className={`p-4 flex items-center justify-between border-b border-outline-variant/40 last:border-b-0 ${
@@ -278,7 +272,7 @@ export default function HargaDetail() {
 
               <div className="text-right">
                 <span className="font-fraunces font-bold text-body-md text-primary mr-1 tabular-nums">
-                  {formatRupiah(comp.price)}
+                  {formatRupiah(item.priceToday + comp.priceOffset)}
                 </span>
                 <span className="text-body-sm text-on-surface-variant font-medium">/kg</span>
               </div>

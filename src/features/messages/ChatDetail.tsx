@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
+import { QUICK_REPLIES } from '@/lib/constants';
 import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
@@ -36,13 +37,6 @@ export default function ChatDetail() {
   const [negotiationStatus, setNegotiationStatus] = useState<NegotiationStatus>(
     chat.negotiationInfo?.status || 'PENDING',
   );
-
-  const quickReplies = [
-    'Siap kirim besok',
-    'Harga nego tipis',
-    'Kirim foto barang baru',
-    'Stok masih cukup',
-  ];
 
   // Scroll to bottom of chat list
   useEffect(() => {
@@ -283,7 +277,7 @@ export default function ChatDetail() {
       <div className="absolute bottom-0 inset-x-0 bg-surface border-t border-outline-variant/60 p-4 pt-3 pb-24 z-20">
         {/* Quick Replies chips row */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3">
-          {quickReplies.map((reply) => (
+          {QUICK_REPLIES.map((reply) => (
             <button
               key={reply}
               onClick={() => handleSendMessage(reply)}

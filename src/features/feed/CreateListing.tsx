@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, UploadCloud, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Post, PostType } from '@/types/post';
+import { CERTIFICATE_OPTIONS } from '@/lib/constants';
 
 export interface CreateListingProps {
   onAddPost: (post: Post) => void;
@@ -37,8 +38,6 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([
     'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
   ]);
-
-  const certificateOptions = ['ORGANIK', 'GAP CERTIFIED', 'BEBAS PESTISIDA', 'SNI'];
 
   const handleToggleCert = (cert: string) => {
     if (selectedCerts.includes(cert)) {
@@ -435,7 +434,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
               Sertifikasi Legal (Grup Tani)
             </span>
             <div className="flex flex-wrap gap-2.5">
-              {certificateOptions.map((cert) => {
+              {CERTIFICATE_OPTIONS.map((cert) => {
                 const isSelected = selectedCerts.includes(cert);
                 return (
                   <button

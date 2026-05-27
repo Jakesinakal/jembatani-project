@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Check, Compass, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { UserRole } from '@/types/user';
+import { CROPS_LIST } from '@/lib/constants';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -25,17 +26,6 @@ export default function Register() {
   const [city, setCity] = useState('Garut');
   const [selectedCrops, setSelectedCrops] = useState<string[]>([]);
   const [errorMsg, setErrorMsg] = useState('');
-
-  const cropsList = [
-    'Cabai Merah',
-    'Kentang',
-    'Tomat',
-    'Bawang Merah',
-    'Beras IR64',
-    'Kopi Arabika',
-    'Wortel',
-    'Mangga',
-  ];
 
   const handleNextStep = () => {
     setErrorMsg('');
@@ -405,7 +395,7 @@ export default function Register() {
                   <span className="text-body-sm text-on-surface-variant">Pilih minimal 3</span>
                 </div>
                 <div id="crop-multiselect-chips" className="flex flex-wrap gap-2 pt-1">
-                  {cropsList.map((crop) => {
+                  {CROPS_LIST.map((crop) => {
                     const isSelected = selectedCrops.includes(crop);
                     return (
                       <button
