@@ -4,6 +4,7 @@
  */
 
 import { Check } from 'lucide-react';
+import { getInitials } from '@/lib/utils';
 
 export interface AvatarProps {
   src?: string;
@@ -27,14 +28,7 @@ export function Avatar({
     xl: 'w-24 h-24 text-headline-md border-2 border-primary',
   };
 
-  const initials = name
-    ? name
-        .split(' ')
-        .slice(0, 2)
-        .map((p) => p[0])
-        .join('')
-        .toUpperCase()
-    : 'JT';
+  const initials = getInitials(name, 'JT');
 
   return (
     <div className={`relative ${className}`}>

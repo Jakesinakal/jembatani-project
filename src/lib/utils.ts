@@ -32,11 +32,22 @@ export function formatRelativeTime(hoursAgo: number): string {
 }
 
 /**
- * Extracts initials from names (e.g., Pak Budi -> PB)
+ * Extracts initials from names (e.g., Pak Budi -> PB, Siti Nur Haliza -> SH).
+ * Uses first + last word. Returns fallback for empty/missing name.
  */
-export function getInitials(name: string): string {
-  if (!name) return '';
+export function getInitials(name: string, fallback = ''): string {
+  if (!name) return fallback;
   const parts = name.split(' ');
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+/** Returns current time as a locale string in id-ID HH:MM format. */
+export function formatTimestamp(): string {
+  return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+/** Toggles an item in an array: removes it if present, appends it if absent. */
+export function toggleItem<T>(arr: T[], item: T): T[] {
+  return arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
 }

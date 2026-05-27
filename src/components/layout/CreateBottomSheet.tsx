@@ -112,14 +112,6 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
           </button>
         </div>
       </div>
-
-      {/* Slide-up keyframe animations inline styling */}
-      <style>{`
-        @keyframes slideUp {
-          from { transform: translateY(100%); }
-          to { transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }

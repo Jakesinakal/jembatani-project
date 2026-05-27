@@ -9,6 +9,7 @@ import { ChevronLeft, Check, Compass, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { UserRole } from '@/types/user';
 import { CROPS_LIST } from '@/lib/constants';
+import { toggleItem } from '@/lib/utils';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -83,11 +84,7 @@ export default function Register() {
   };
 
   const handleToggleCrop = (crop: string) => {
-    if (selectedCrops.includes(crop)) {
-      setSelectedCrops(selectedCrops.filter((c) => c !== crop));
-    } else {
-      setSelectedCrops([...selectedCrops, crop]);
-    }
+    setSelectedCrops(toggleItem(selectedCrops, crop));
   };
 
   return (

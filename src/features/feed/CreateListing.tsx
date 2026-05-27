@@ -9,6 +9,7 @@ import { ChevronLeft, UploadCloud, MapPin, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Post, PostType } from '@/types/post';
 import { CERTIFICATE_OPTIONS } from '@/lib/constants';
+import { toggleItem } from '@/lib/utils';
 
 export interface CreateListingProps {
   onAddPost: (post: Post) => void;
@@ -40,11 +41,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
   ]);
 
   const handleToggleCert = (cert: string) => {
-    if (selectedCerts.includes(cert)) {
-      setSelectedCerts(selectedCerts.filter((c) => c !== cert));
-    } else {
-      setSelectedCerts([...selectedCerts, cert]);
-    }
+    setSelectedCerts(toggleItem(selectedCerts, cert));
   };
 
   const handlePublish = (e: React.FormEvent) => {

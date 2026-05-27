@@ -164,48 +164,48 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
       </div>
 
       {/* Filter Horizontal Chip Row */}
-      <div className="px-5 mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-        <button
-          onClick={() => setActiveFilter('Semua')}
-          className={`px-4.5 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 ${
-            activeFilter === 'Semua'
-              ? 'bg-primary text-on-primary'
-              : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
-          }`}
-        >
-          Semua
-        </button>
-        <button
-          onClick={() => setActiveFilter('Penawaran')}
-          className={`px-4.5 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
-            activeFilter === 'Penawaran'
-              ? 'bg-tertiary-fixed text-on-tertiary-fixed'
-              : 'bg-surface-container-low text-on-surface-variant'
-          }`}
-        >
-          🧺 Penawaran Petani
-        </button>
-        <button
-          onClick={() => setActiveFilter('Permintaan')}
-          className={`px-4.5 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
-            activeFilter === 'Permintaan'
-              ? 'bg-primary-fixed text-on-primary-fixed-variant'
-              : 'bg-surface-container-low text-on-surface-variant'
-          }`}
-        >
-          💼 Permintaan Pembeli
-        </button>
-        <button
-          onClick={() => setActiveFilter('Dekat Saya')}
-          className={`px-4.5 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
-            activeFilter === 'Dekat Saya'
-              ? 'bg-surface-container-highest border border-outline-variant text-on-surface'
-              : 'bg-surface-container-low text-on-surface-variant'
-          }`}
-        >
-          📍 Dekat Saya
-        </button>
-      </div>
+      {(() => {
+        const filterChips: {
+          value: typeof activeFilter;
+          label: string;
+          activeClass: string;
+        }[] = [
+          { value: 'Semua', label: 'Semua', activeClass: 'bg-primary text-on-primary' },
+          {
+            value: 'Penawaran',
+            label: '🧺 Penawaran Petani',
+            activeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
+          },
+          {
+            value: 'Permintaan',
+            label: '💼 Permintaan Pembeli',
+            activeClass: 'bg-primary-fixed text-on-primary-fixed-variant',
+          },
+          {
+            value: 'Dekat Saya',
+            label: '📍 Dekat Saya',
+            activeClass:
+              'bg-surface-container-highest border border-outline-variant text-on-surface',
+          },
+        ];
+        return (
+          <div className="px-5 mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            {filterChips.map((chip) => (
+              <button
+                key={chip.value}
+                onClick={() => setActiveFilter(chip.value)}
+                className={`px-4.5 py-2 text-label-md font-bold font-jakarta rounded-full transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+                  activeFilter === chip.value
+                    ? chip.activeClass
+                    : 'bg-surface-container-low text-on-surface-variant'
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        );
+      })()}
 
       {/* Feed Listing Cards Container */}
       <div id="opportunity-feed-stack" className="px-5 mt-6 space-y-6">
@@ -398,14 +398,6 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
           })
         )}
       </div>
-
-      {/* Marquee Animation Support CSS */}
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
 }

@@ -16,7 +16,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
-import { formatRupiah } from '@/lib/utils';
+import { formatRupiah, formatTimestamp } from '@/lib/utils';
 import { QUICK_REPLIES } from '@/lib/constants';
 import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
@@ -49,7 +49,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: text,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
@@ -77,7 +77,7 @@ export default function ChatDetail() {
         id: crypto.randomUUID(),
         sender: 'PARTNER' as const,
         text: responseText,
-        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        timestamp: formatTimestamp(),
       };
 
       setChat((prev) => ({
@@ -97,7 +97,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'PARTNER' as const,
       text: `🤝 NEGOSIASI DISEPAKATI! Harga disetujui pada Rp 32.000/kg untuk 100 kg. Surat jalan pengiriman logistik sedang diproduksi.`,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
@@ -119,7 +119,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: `Saya mengajukan penawaran balik seharga ${formatRupiah(offerNum)}/kg.`,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
