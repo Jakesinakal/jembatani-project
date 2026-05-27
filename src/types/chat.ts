@@ -3,13 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+export type NegotiationStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+
 export interface NegotiationDetails {
   productName: string;
   productPhoto: string;
   quantity: string;
   lastPriceOffer: number;
   originalPrice: number;
-  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  status: NegotiationStatus;
 }
 
 export interface ChatMessage {

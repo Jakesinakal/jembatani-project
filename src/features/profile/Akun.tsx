@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
+import { mockCurrentUser } from '@/data/mockData';
+import { ROUTES } from '@/lib/routes';
 import { UserRole } from '@/types/user';
 
 export interface AkunProps {
@@ -82,7 +84,7 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
     if (label === 'Keluar Akun') {
       const confirmLogout = window.confirm('Apakah Anda yakin ingin keluar dari Akun JembaTani?');
       if (confirmLogout) {
-        navigate('/login');
+        navigate(ROUTES.LOGIN);
       }
     } else {
       alert(`Menu terpilih: ${label} (Mode Demo)`);
@@ -96,20 +98,20 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
         {/* Large Avatar Centered with forest border */}
         <div className="relative mb-4">
           <Avatar
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
-            name="Siti Nurhaliza"
+            src={mockCurrentUser.avatar}
+            name={mockCurrentUser.name}
             size="xl"
-            isVerified={true}
+            isVerified={mockCurrentUser.isVerified}
           />
         </div>
 
         {/* User identification */}
         <h2 className="font-fraunces text-headline-md font-bold text-primary flex items-center gap-1">
-          Siti Nurhaliza
+          {mockCurrentUser.name}
         </h2>
 
         <span className="text-body-sm uppercase font-bold text-on-surface-variant font-jakarta tracking-wider flex items-center gap-0.5 mt-1">
-          📍 Garut, Jawa Barat
+          📍 {mockCurrentUser.location}
         </span>
 
         {/* Verified labels */}

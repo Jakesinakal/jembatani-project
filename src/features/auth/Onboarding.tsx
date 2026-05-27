@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@/components/ui/Button';
@@ -38,12 +39,12 @@ export default function Onboarding() {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   };
 
   const handleSkip = () => {
-    navigate('/login');
+    navigate(ROUTES.LOGIN);
   };
 
   return (

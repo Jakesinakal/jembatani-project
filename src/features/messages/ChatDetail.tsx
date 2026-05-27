@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 import {
   ChevronLeft,
   Phone,
@@ -16,32 +17,27 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
-import { formatRupiah } from '@/lib/utils';
+import { formatRupiah, formatTimestamp } from '@/lib/utils';
+import { QUICK_REPLIES } from '@/lib/constants';
+import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
+import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 
 export default function ChatDetail() {
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const timelineEndRef = useRef<HTMLDivElement>(null);
 
-  // Locate the conversation index or default to Pak Budi (chat_1)
   const [chat, setChat] = useState(() => {
     const found = mockChats.find((c) => c.id === chatId);
     return found ? { ...found } : { ...mockChats[0] };
   });
 
   const [inputText, setInputText] = useState('');
-  const [negotiationStatus, setNegotiationStatus] = useState<'PENDING' | 'ACCEPTED' | 'REJECTED'>(
+  const [negotiationStatus, setNegotiationStatus] = useState<NegotiationStatus>(
     chat.negotiationInfo?.status || 'PENDING',
   );
-
-  const quickReplies = [
-    'Siap kirim besok',
-    'Harga nego tipis',
-    'Kirim foto barang baru',
-    'Stok masih cukup',
-  ];
 
   // Scroll to bottom of chat list
   useEffect(() => {
@@ -54,7 +50,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: text,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
@@ -82,7 +78,7 @@ export default function ChatDetail() {
         id: crypto.randomUUID(),
         sender: 'PARTNER' as const,
         text: responseText,
-        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        timestamp: formatTimestamp(),
       };
 
       setChat((prev) => ({
@@ -102,7 +98,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'PARTNER' as const,
       text: `🤝 NEGOSIASI DISEPAKATI! Harga disetujui pada Rp 32.000/kg untuk 100 kg. Surat jalan pengiriman logistik sedang diproduksi.`,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
@@ -124,7 +120,7 @@ export default function ChatDetail() {
       id: crypto.randomUUID(),
       sender: 'ME' as const,
       text: `Saya mengajukan penawaran balik seharga ${formatRupiah(offerNum)}/kg.`,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      timestamp: formatTimestamp(),
     };
 
     setChat((prev) => ({
@@ -139,7 +135,7 @@ export default function ChatDetail() {
       <div className="sticky top-0 bg-surface-container-highest/95 backdrop-blur-md z-30 px-5 py-4 flex items-center justify-between border-b border-outline-variant/60">
         <div className="flex items-center gap-3.5 flex-1 min-w-0">
           <button
-            onClick={() => navigate('/pesan')}
+            onClick={() => navigate(ROUTES.PESAN)}
             className="p-1.5 hover:bg-surface-container rounded-full text-primary active:scale-95 transition-all shrink-0"
           >
             <ChevronLeft className="w-6 h-6" />
@@ -157,11 +153,7 @@ export default function ChatDetail() {
               <span className="font-jakarta font-bold text-body-sm text-on-surface leading-tight truncate">
                 {chat.partnerName}
               </span>
-              {chat.partnerVerified && (
-                <span className="bg-primary text-on-primary rounded-full p-0.5 text-[5px] shrink-0">
-                  <Check className="w-1.5 h-1.5" strokeWidth={1.5} />
-                </span>
-              )}
+              {chat.partnerVerified && <VerifiedBadge size="xs" />}
             </div>
             <span className="text-body-sm text-primary font-bold flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-surface-tint rounded-full inline-block animate-pulse" />{' '}
@@ -185,7 +177,7 @@ export default function ChatDetail() {
 
       {/* Pinned Negotiation Card Row */}
       {chat.hasActiveNegotiation && chat.negotiationInfo && negotiationStatus === 'PENDING' && (
-        <div className="bg-tertiary-fixed/40 border-b border-outline-variant p-4 px-5 flex flex-col sm:flex-row justify-between gap-4 z-20">
+        <div className="bg-tertiary-fixed/40 border-b border-outline-variant p-4 px-5 flex flex-col gap-3 z-20">
           <div className="flex items-start gap-3">
             <img
               src={chat.negotiationInfo.productPhoto}
@@ -211,7 +203,7 @@ export default function ChatDetail() {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center justify-end shrink-0">
+          <div className="flex gap-2 items-center justify-end">
             <button
               onClick={handleTawarBalik}
               className="px-3.5 py-1.5 border border-outline text-primary font-bold text-label-md bg-surface-container-lowest hover:bg-surface-container rounded-lg active:scale-95 transition-all"
@@ -231,7 +223,7 @@ export default function ChatDetail() {
       )}
 
       {/* Chat Timeline (Timeline layout wraps the entire scrolling area) */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 pb-32">
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 pb-48">
         {chat.messages.map((msg) => {
           const isMe = msg.sender === 'ME';
           const isSystem = msg.text.startsWith('🤝') || msg.text.startsWith('🤝 NEGOSIASI');
@@ -279,10 +271,10 @@ export default function ChatDetail() {
       </div>
 
       {/* Pinned Input Accessory row with quick replies and bottom bars */}
-      <div className="absolute bottom-0 inset-x-0 bg-surface border-t border-outline-variant/60 p-4 pt-3 pb-6 z-20">
+      <div className="absolute bottom-0 inset-x-0 bg-surface border-t border-outline-variant/60 p-4 pt-3 pb-24 z-20">
         {/* Quick Replies chips row */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3">
-          {quickReplies.map((reply) => (
+          {QUICK_REPLIES.map((reply) => (
             <button
               key={reply}
               onClick={() => handleSendMessage(reply)}

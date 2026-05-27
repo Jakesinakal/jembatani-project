@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown } from 'lucide-react';
 import { mockCommodities } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
@@ -221,7 +222,7 @@ export default function Harga() {
           {topList.map((item, rank) => (
             <div
               key={item.id}
-              onClick={() => navigate(`/harga/${item.id}`)}
+              onClick={() => navigate(ROUTES.HARGA_DETAIL(item.id))}
               className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-surface-container-low transition-colors"
             >
               {/* Rank */}

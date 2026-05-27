@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { UserProfile } from '../types/user';
-import { CommodityPriceInfo } from '../types/commodity';
-import { Post } from '../types/post';
-import { ChatConversation } from '../types/chat';
+import { UserProfile } from '@/types/user';
+import { CommodityPriceInfo } from '@/types/commodity';
+import { Post } from '@/types/post';
+import { ChatConversation } from '@/types/chat';
 
 export const mockCurrentUser: UserProfile = {
   id: 'user_me',
