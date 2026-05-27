@@ -12,7 +12,8 @@ import { Button } from '@/components/ui/Button';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatRupiah, formatRelativeTime } from '@/lib/utils';
-import { mockCommodities } from '@/data/mockData';
+import { ROUTES } from '@/lib/routes';
+import { mockCommodities, mockChats } from '@/data/mockData';
 import { Post } from '@/types/post';
 import { UserRole } from '@/types/user';
 
@@ -357,7 +358,7 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
                     </button>
 
                     <button
-                      onClick={() => navigate('/pesan/chat_1')}
+                      onClick={() => navigate(ROUTES.PESAN_DETAIL(mockChats[0].id))}
                       className="flex items-center gap-1.5 text-label-md font-semibold text-on-surface-variant font-jakarta hover:text-primary"
                     >
                       <MessageCircle strokeWidth={1.5} className="w-5 h-5" />
@@ -378,8 +379,7 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
                     variant={isPenawaran ? 'secondary' : 'primary'}
                     size="sm"
                     onClick={() => {
-                      // Navigate to Pak Budi (chat_1) directly on CTA tap, or configure partner name
-                      navigate('/pesan/chat_1');
+                      navigate(ROUTES.PESAN_DETAIL(mockChats[0].id));
                     }}
                     className="shadow-sm py-1.5 px-4 font-bold"
                   >

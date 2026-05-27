@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Phone, Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { ROUTES } from '@/lib/routes';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Login() {
       return;
     }
     // Happy path bypass authentication
-    navigate('/beranda');
+    navigate(ROUTES.BERANDA);
   };
 
   return (
@@ -120,7 +121,7 @@ export default function Login() {
           {/* Quick Demo Bypass */}
           <button
             type="button"
-            onClick={() => navigate('/beranda')}
+            onClick={() => navigate(ROUTES.BERANDA)}
             className="w-full py-2.5 bg-surface-container text-primary rounded-lg text-label-md font-bold transition-all border border-outline-variant hover:bg-surface-container-high"
           >
             Lewati Log Masuk (Mode Demo)
@@ -136,7 +137,7 @@ export default function Login() {
 
         {/* Google Authentication Icon */}
         <button
-          onClick={() => navigate('/beranda')}
+          onClick={() => navigate(ROUTES.BERANDA)}
           className="w-full border border-outline bg-surface-container-lowest text-on-surface font-jakarta font-bold text-body-md py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container active:translate-y-px transition-all"
         >
           <svg className="w-5 h-4" viewBox="0 0 24 24">
@@ -164,7 +165,7 @@ export default function Login() {
       <div className="text-center font-jakarta text-body-sm mt-8 text-on-surface-variant">
         Belum punya akun?{' '}
         <button
-          onClick={() => navigate('/register')}
+          onClick={() => navigate(ROUTES.REGISTER)}
           className="text-secondary font-bold hover:underline"
         >
           Daftar Sekarang

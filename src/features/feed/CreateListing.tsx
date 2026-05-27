@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { Post, PostType } from '@/types/post';
 import { mockCurrentUser } from '@/data/mockData';
 import { CERTIFICATE_OPTIONS } from '@/lib/constants';
+import { ROUTES } from '@/lib/routes';
 import { toggleItem } from '@/lib/utils';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { FormField } from '@/components/ui/FormField';
@@ -91,7 +92,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
 
     onAddPost(newPost);
     alert('Listing berhasil diterbitkan ke feed!');
-    navigate('/beranda');
+    navigate(ROUTES.BERANDA);
   };
 
   const triggerUploadMock = () => {
@@ -111,7 +112,7 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
     <div className="flex-1 pb-28 bg-surface text-on-surface">
       <PageHeader
         title={`Buat ${listingType === 'PENAWARAN' ? 'Penawaran' : 'Permintaan'}`}
-        onBack={() => navigate('/beranda')}
+        onBack={() => navigate(ROUTES.BERANDA)}
       />
 
       <form onSubmit={handlePublish} className="px-5 mt-6 space-y-6">

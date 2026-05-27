@@ -6,13 +6,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { ROUTES } from '@/lib/routes';
 
 export default function Splash() {
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/onboarding');
+      navigate(ROUTES.ONBOARDING);
     }, 1800);
     return () => clearTimeout(timer);
   }, [navigate]);

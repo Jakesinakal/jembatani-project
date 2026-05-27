@@ -8,6 +8,7 @@ import { Share2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { mockCommodities } from '@/data/mockData';
 import { formatRupiah } from '@/lib/utils';
 import { MARKET_COMPARISONS } from '@/lib/constants';
+import { ROUTES } from '@/lib/routes';
 import { Button } from '@/components/ui/Button';
 import { PageHeader } from '@/components/layout/PageHeader';
 
@@ -170,7 +171,7 @@ export default function HargaDetail() {
     <div className="flex-1 pb-24 bg-surface text-on-surface">
       <PageHeader
         title="Detail Tren Harga"
-        onBack={() => navigate('/harga')}
+        onBack={() => navigate(ROUTES.HARGA)}
         rightAction={
           <button
             onClick={() => alert('Link tren dibagikan ke WhatsApp!')}
@@ -286,7 +287,7 @@ export default function HargaDetail() {
             dari petani Garut?
           </p>
           <Button
-            onClick={() => navigate('/beranda')}
+            onClick={() => navigate(ROUTES.BERANDA)}
             variant="primary"
             fullWidth
             className="flex items-center justify-center gap-1.5 font-bold"

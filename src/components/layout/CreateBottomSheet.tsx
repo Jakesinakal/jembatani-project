@@ -5,6 +5,7 @@
 
 import { ShoppingBag, Search, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 
 export interface CreateBottomSheetProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ export function CreateBottomSheet({ isOpen, onClose }: CreateBottomSheetProps) {
     if (type === 'cerita') {
       alert('Tulis Cerita Harian: Fitur rilis di V2 JembaTani!');
     } else {
-      navigate(`/post/create?type=${type}`);
+      navigate(ROUTES.POST_CREATE(type));
     }
   };
 

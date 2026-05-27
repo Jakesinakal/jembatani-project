@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 import { Search, MessageSquare } from 'lucide-react';
 import { mockChats } from '@/data/mockData';
 import { Avatar } from '@/components/ui/Avatar';
@@ -85,7 +86,7 @@ export default function Pesan() {
           filteredConversations.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => navigate(`/pesan/${chat.id}`)}
+              onClick={() => navigate(ROUTES.PESAN_DETAIL(chat.id))}
               className="bg-surface-container-lowest rounded-lg border border-outline-variant p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-low/40 active:scale-[0.99] transition-all"
             >
               <div className="flex items-center gap-3.5 flex-1 min-w-0">

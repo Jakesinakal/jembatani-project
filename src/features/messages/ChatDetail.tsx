@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/lib/routes';
 import {
   ChevronLeft,
   Phone,
@@ -28,7 +29,6 @@ export default function ChatDetail() {
   const navigate = useNavigate();
   const timelineEndRef = useRef<HTMLDivElement>(null);
 
-  // Locate the conversation index or default to Pak Budi (chat_1)
   const [chat, setChat] = useState(() => {
     const found = mockChats.find((c) => c.id === chatId);
     return found ? { ...found } : { ...mockChats[0] };
@@ -135,7 +135,7 @@ export default function ChatDetail() {
       <div className="sticky top-0 bg-surface-container-highest/95 backdrop-blur-md z-30 px-5 py-4 flex items-center justify-between border-b border-outline-variant/60">
         <div className="flex items-center gap-3.5 flex-1 min-w-0">
           <button
-            onClick={() => navigate('/pesan')}
+            onClick={() => navigate(ROUTES.PESAN)}
             className="p-1.5 hover:bg-surface-container rounded-full text-primary active:scale-95 transition-all shrink-0"
           >
             <ChevronLeft className="w-6 h-6" />

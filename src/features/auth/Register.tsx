@@ -11,6 +11,7 @@ import { UserRole } from '@/types/user';
 import { CROPS_LIST } from '@/lib/constants';
 import { toggleItem } from '@/lib/utils';
 import { FormField } from '@/components/ui/FormField';
+import { ROUTES } from '@/lib/routes';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Register() {
         return;
       }
       // Finish registration
-      navigate('/beranda');
+      navigate(ROUTES.BERANDA);
     }
   };
 
@@ -68,7 +69,7 @@ export default function Register() {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   };
 
