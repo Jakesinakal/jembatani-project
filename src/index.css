@@ -131,20 +131,22 @@ body {
   scrollbar-width: none;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
+@layer theme {
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
-  100% {
-    transform: translateX(-50%);
-  }
-}
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
 }
