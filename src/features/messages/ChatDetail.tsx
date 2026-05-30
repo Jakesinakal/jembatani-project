@@ -4,7 +4,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/lib/routes';
 import {
   ChevronLeft,
@@ -15,119 +15,95 @@ import {
   Camera,
   Check,
   ShieldCheck,
+  Loader2,
 } from 'lucide-react';
-import { mockChats } from '@/data/mockData';
-import { formatRupiah, formatTimestamp } from '@/lib/utils';
+import { formatRupiah } from '@/lib/utils';
 import { QUICK_REPLIES } from '@/lib/constants';
-import { NegotiationStatus } from '@/types/chat';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
+import { useChatDetail } from './useChatDetail';
+import { OfferSheet } from './OfferSheet';
+import type { OfferSeed } from './useStartChat';
 
 export default function ChatDetail() {
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const timelineEndRef = useRef<HTMLDivElement>(null);
 
-  const [chat, setChat] = useState(() => {
-    const found = mockChats.find((c) => c.id === chatId);
-    return found ? { ...found } : { ...mockChats[0] };
-  });
+  const { chat, loading, sendMessage, acceptNegotiation, counterOffer, createNegotiation } =
+    useChatDetail(chatId);
+
+  // Product context passed in when the user tapped "Tawar/Penuhi" on a post.
+  const offerSeed = (location.state as { offerSeed?: OfferSeed } | null)?.offerSeed;
 
   const [inputText, setInputText] = useState('');
-  const [negotiationStatus, setNegotiationStatus] = useState<NegotiationStatus>(
-    chat.negotiationInfo?.status || 'PENDING',
-  );
+  const [manualMode, setManualMode] = useState<'create' | 'counter' | null>(null);
+  const [autoCreateDismissed, setAutoCreateDismissed] = useState(false);
 
-  // Scroll to bottom of chat list
+  // Scroll to bottom whenever the message list changes.
   useEffect(() => {
     timelineEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chat.messages]);
+  }, [chat?.messages]);
+
+  // Which sheet to show, derived during render (no setState-in-effect): if we
+  // arrived from a post's "Tawar/Penuhi" button and there's no active negotiation
+  // yet, default to the create form; a manual action or dismissal overrides it.
+  const autoCreate = !!offerSeed && !!chat && !chat.hasActiveNegotiation && !autoCreateDismissed;
+  const sheetMode = manualMode ?? (autoCreate ? 'create' : null);
+  const closeSheet = () => {
+    setManualMode(null);
+    setAutoCreateDismissed(true);
+  };
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
-    const newMsg = {
-      id: crypto.randomUUID(),
-      sender: 'ME' as const,
-      text: text,
-      timestamp: formatTimestamp(),
-    };
-
-    setChat((prev) => ({
-      ...prev,
-      lastMessage: text,
-      lastMessageTimestamp: 'Baru',
-      messages: [...prev.messages, newMsg],
-    }));
+    sendMessage(text);
     setInputText('');
-
-    // Simulate an automatic polite response after 1s
-    setTimeout(() => {
-      const partnerReplies: Record<string, string> = {
-        'Siap kirim besok':
-          'Terimakasih Bu Siti. Saya segera siapkan keranjang angkutannya siang ini.',
-        'Harga nego tipis': 'Baik, silakan diajukan penawarannya di kotak tawar ya.',
-        'Kirim foto barang baru':
-          'Sebentar ya Bu, saya ambilkan foto cabai segar langsung dari kebun.',
-        'Stok masih cukup': 'Siap, kita langsung proses timbangannya besok pagi.',
-      };
-
-      const responseText =
-        partnerReplies[text] || 'Ok baik Bu Siti, segera saya infokan kembali kelanjutannya.';
-      const responderMsg = {
-        id: crypto.randomUUID(),
-        sender: 'PARTNER' as const,
-        text: responseText,
-        timestamp: formatTimestamp(),
-      };
-
-      setChat((prev) => ({
-        ...prev,
-        lastMessage: responseText,
-        messages: [...prev.messages, responderMsg],
-      }));
-    }, 1200);
   };
 
   const handleAcceptNegotiation = () => {
-    setNegotiationStatus('ACCEPTED');
-    alert('Nego Harga Disetujui! Pesanan resmi dibuat.');
-
-    // Append transaction event message to timeline
-    const systemMsg = {
-      id: crypto.randomUUID(),
-      sender: 'PARTNER' as const,
-      text: `🤝 NEGOSIASI DISEPAKATI! Harga disetujui pada Rp 32.000/kg untuk 100 kg. Surat jalan pengiriman logistik sedang diproduksi.`,
-      timestamp: formatTimestamp(),
-    };
-
-    setChat((prev) => ({
-      ...prev,
-      hasActiveNegotiation: false,
-      messages: [...prev.messages, systemMsg],
-    }));
+    if (window.confirm('Setujui penawaran ini? Pesanan resmi akan dibuat.')) {
+      acceptNegotiation();
+    }
   };
 
-  const handleTawarBalik = () => {
-    const offer = prompt('Masukkan harga penawaran balik Anda (Rp per Kg):', '32500');
-    if (!offer) return;
-    const offerNum = parseInt(offer);
-    if (isNaN(offerNum)) return;
+  const handleTawarBalik = () => setManualMode('counter');
 
-    alert(`Penawaran balik dikirim sebesar ${formatRupiah(offerNum)}/kg!`);
-
-    const myOfferMsg = {
-      id: crypto.randomUUID(),
-      sender: 'ME' as const,
-      text: `Saya mengajukan penawaran balik seharga ${formatRupiah(offerNum)}/kg.`,
-      timestamp: formatTimestamp(),
-    };
-
-    setChat((prev) => ({
-      ...prev,
-      messages: [...prev.messages, myOfferMsg],
-    }));
+  const handleSheetSubmit = ({ quantity, price }: { quantity: string; price: number }) => {
+    if (sheetMode === 'create' && offerSeed) {
+      createNegotiation({
+        productName: offerSeed.productName,
+        productPhoto: offerSeed.productPhoto,
+        quantity,
+        originalPrice: offerSeed.originalPrice,
+        offerPrice: price,
+      });
+    } else if (sheetMode === 'counter') {
+      counterOffer(price);
+    }
+    closeSheet();
   };
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-screen bg-surface">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!chat) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center min-h-screen bg-surface gap-4 px-8 text-center">
+        <p className="font-jakarta text-body-md text-on-surface-variant">Chat tidak ditemukan.</p>
+        <Button onClick={() => navigate(ROUTES.PESAN)} variant="secondary" size="sm">
+          Kembali ke Pesan
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-surface text-on-surface relative">
@@ -176,7 +152,7 @@ export default function ChatDetail() {
       </div>
 
       {/* Pinned Negotiation Card Row */}
-      {chat.hasActiveNegotiation && chat.negotiationInfo && negotiationStatus === 'PENDING' && (
+      {chat.hasActiveNegotiation && chat.negotiationInfo && (
         <div className="bg-tertiary-fixed/40 border-b border-outline-variant p-4 px-5 flex flex-col gap-3 z-20">
           <div className="flex items-start gap-3">
             <img
@@ -324,6 +300,38 @@ export default function ChatDetail() {
           </button>
         </div>
       </div>
+
+      {/* Offer / counter-offer bottom sheet */}
+      {sheetMode === 'create' && offerSeed && (
+        <OfferSheet
+          open
+          onClose={closeSheet}
+          title="Ajukan Penawaran"
+          productName={offerSeed.productName}
+          productPhoto={offerSeed.productPhoto}
+          originalPrice={offerSeed.originalPrice}
+          initialQuantity={offerSeed.defaultQuantity}
+          initialPrice={offerSeed.originalPrice}
+          quantityEditable
+          submitLabel="Kirim Penawaran"
+          onSubmit={handleSheetSubmit}
+        />
+      )}
+      {sheetMode === 'counter' && chat.negotiationInfo && (
+        <OfferSheet
+          open
+          onClose={closeSheet}
+          title="Tawar Balik"
+          productName={chat.negotiationInfo.productName}
+          productPhoto={chat.negotiationInfo.productPhoto}
+          originalPrice={chat.negotiationInfo.originalPrice}
+          initialQuantity={chat.negotiationInfo.quantity}
+          initialPrice={chat.negotiationInfo.lastPriceOffer}
+          quantityEditable={false}
+          submitLabel="Kirim Tawaran Balik"
+          onSubmit={handleSheetSubmit}
+        />
+      )}
     </div>
   );
 }

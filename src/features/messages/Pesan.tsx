@@ -6,23 +6,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/lib/routes';
-import { Search, MessageSquare } from 'lucide-react';
-import { mockChats } from '@/data/mockData';
+import { Search, MessageSquare, Loader2 } from 'lucide-react';
+import { useChats } from './useChats';
 import { Avatar } from '@/components/ui/Avatar';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function Pesan() {
   const navigate = useNavigate();
+  const { chats, loading } = useChats();
   const [activeTab, setActiveTab] = useState<'Semua' | 'Negosiasi' | 'Pesanan'>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter conversations
-  const filteredConversations = mockChats.filter((chat) => {
+  const filteredConversations = chats.filter((chat) => {
     // 1. Tab category filter
     if (activeTab === 'Negosiasi' && !chat.hasActiveNegotiation) return false;
-    // (mocking 'Pesanan' as done transactions where hasActiveNegotiation is false but there was chat history)
-    if (activeTab === 'Pesanan' && chat.id !== 'chat_2') return false;
+    // TODO: 'Pesanan' needs a proper order/transaction concept in the schema.
+    // For now it shows chats that aren't under active negotiation.
+    if (activeTab === 'Pesanan' && chat.hasActiveNegotiation) return false;
 
     // 2. Query search
     if (searchQuery) {
@@ -80,7 +82,11 @@ export default function Pesan() {
 
       {/* Vertical List of Chat items (6 chats) */}
       <div id="messages-list-stack" className="px-5 mt-6 space-y-3">
-        {filteredConversations.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : filteredConversations.length === 0 ? (
           <EmptyState icon={MessageSquare} message="Belum ada chat kategori ini." />
         ) : (
           filteredConversations.map((chat) => (

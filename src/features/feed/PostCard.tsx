@@ -15,9 +15,10 @@ export interface PostCardProps {
   post: Post;
   onLikePost: (postId: string) => void;
   onContact: () => void;
+  onMakeOffer: () => void;
 }
 
-export function PostCard({ post, onLikePost, onContact }: PostCardProps) {
+export function PostCard({ post, onLikePost, onContact, onMakeOffer }: PostCardProps) {
   const isPenawaran = post.type === 'PENAWARAN';
 
   return (
@@ -168,7 +169,7 @@ export function PostCard({ post, onLikePost, onContact }: PostCardProps) {
           id={`post-cta-${post.id}`}
           variant={isPenawaran ? 'secondary' : 'primary'}
           size="sm"
-          onClick={onContact}
+          onClick={onMakeOffer}
           className="shadow-sm py-1.5 px-4 font-bold"
         >
           {isPenawaran ? 'Tawar' : 'Penuhi'}

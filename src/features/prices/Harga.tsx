@@ -6,8 +6,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/lib/routes';
-import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown } from 'lucide-react';
-import { mockCommodities } from '@/data/mockData';
+import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Loader2 } from 'lucide-react';
+import { useCommodities } from '@/features/prices/useCommodities';
 import { formatRupiah } from '@/lib/utils';
 import { CommodityPriceInfo, CommodityCategory } from '@/types/commodity';
 
@@ -87,14 +87,15 @@ function TickerGrid({ slide }: { key?: number; slide: TickerSlide }) {
 
 export default function Harga() {
   const navigate = useNavigate();
+  const { commodities, loading, error } = useCommodities();
   const [selectedRegion, setSelectedRegion] = useState('Jawa Barat');
   const [slideIndex, setSlideIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'GAINER' | 'LOSER'>('GAINER');
-  const slides = buildSlides(mockCommodities);
-  const currentSlide = slides[slideIndex];
+  const slides = useMemo(() => buildSlides(commodities), [commodities]);
+  const currentSlide = slides[slideIndex] as TickerSlide | undefined;
 
   const topList = useMemo(() => {
-    const all = [...mockCommodities];
+    const all = [...commodities];
     if (activeTab === 'GAINER')
       return all
         .filter((c) => c.isUp)
@@ -104,7 +105,7 @@ export default function Harga() {
       .filter((c) => !c.isUp)
       .sort((a, b) => b.deltaPercent - a.deltaPercent)
       .slice(0, 10);
-  }, [activeTab]);
+  }, [activeTab, commodities]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -112,6 +113,25 @@ export default function Harga() {
     }, TICKER_INTERVAL);
     return () => clearInterval(interval);
   }, [slides.length]);
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-surface">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-surface px-5">
+        <div className="text-center">
+          <p className="font-jakarta text-body-md text-error font-semibold">Gagal memuat data</p>
+          <p className="font-jakarta text-body-sm text-on-surface-variant mt-1">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
@@ -154,41 +174,43 @@ export default function Harga() {
       </div>
 
       {/* Category Ticker */}
-      <div className="mt-6 px-5">
-        <div className="bg-surface-container-low rounded-lg border border-outline-variant/60 overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between px-3 pt-2.5 pb-2">
-            <span className="font-jakarta text-label-md font-bold text-on-surface uppercase tracking-wider">
-              {TICKER_GROUP_LABELS[currentSlide.group]}
-              {currentSlide.totalPages > 1 && (
-                <span className="ml-2 text-on-surface-variant font-normal normal-case tracking-normal">
-                  {currentSlide.page + 1}/{currentSlide.totalPages}
-                </span>
-              )}
-            </span>
-            <div className="flex gap-1.5">
-              {slides.map((s, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSlideIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    idx === slideIndex
-                      ? 'w-5 bg-primary'
-                      : s.group === currentSlide.group
-                        ? 'w-1.5 bg-primary/40'
-                        : 'w-1.5 bg-outline-variant'
-                  }`}
-                />
-              ))}
+      {currentSlide && (
+        <div className="mt-6 px-5">
+          <div className="bg-surface-container-low rounded-lg border border-outline-variant/60 overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-3 pt-2.5 pb-2">
+              <span className="font-jakarta text-label-md font-bold text-on-surface uppercase tracking-wider">
+                {TICKER_GROUP_LABELS[currentSlide.group]}
+                {currentSlide.totalPages > 1 && (
+                  <span className="ml-2 text-on-surface-variant font-normal normal-case tracking-normal">
+                    {currentSlide.page + 1}/{currentSlide.totalPages}
+                  </span>
+                )}
+              </span>
+              <div className="flex gap-1.5">
+                {slides.map((s, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSlideIndex(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      idx === slideIndex
+                        ? 'w-5 bg-primary'
+                        : s.group === currentSlide.group
+                          ? 'w-1.5 bg-primary/40'
+                          : 'w-1.5 bg-outline-variant'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Grid */}
+            <div className="pb-px">
+              <TickerGrid key={slideIndex} slide={currentSlide} />
             </div>
           </div>
-
-          {/* Grid */}
-          <div className="pb-px">
-            <TickerGrid key={slideIndex} slide={currentSlide} />
-          </div>
         </div>
-      </div>
+      )}
 
       {/* Naik & Turun */}
       <div className="px-5 mt-6">

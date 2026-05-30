@@ -5,24 +5,51 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useAuth } from '@/contexts/AuthContext';
 import { ROUTES } from '@/lib/routes';
+
+// Shared demo account for portfolio visitors (seeded in Supabase).
+const DEMO_EMAIL = 'demo@jembatani.app';
+const DEMO_PASSWORD = 'JembaTani2026';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [identifier, setIdentifier] = useState('');
+  const { signIn } = useAuth();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!identifier || !password) {
-      setErrorMsg('Harap masukkan nomor HP/email dan kata sandi Anda.');
+  const handleDemoLogin = async () => {
+    setDemoLoading(true);
+    setErrorMsg('');
+    const { error } = await signIn(DEMO_EMAIL, DEMO_PASSWORD);
+    setDemoLoading(false);
+    if (error) {
+      setErrorMsg('Gagal masuk ke akun demo. Coba lagi sebentar.');
       return;
     }
-    // Happy path bypass authentication
+    navigate(ROUTES.BERANDA);
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setErrorMsg('Harap masukkan email dan kata sandi Anda.');
+      return;
+    }
+    setIsLoading(true);
+    setErrorMsg('');
+    const { error } = await signIn(email, password);
+    setIsLoading(false);
+    if (error) {
+      setErrorMsg('Email atau kata sandi salah. Silakan coba lagi.');
+      return;
+    }
     navigate(ROUTES.BERANDA);
   };
 
@@ -50,23 +77,23 @@ export default function Login() {
             </div>
           )}
 
-          {/* Email / No. HP Input */}
+          {/* Email Input */}
           <div className="space-y-1.5">
             <label className="text-label-md font-bold text-on-surface tracking-wider uppercase font-jakarta">
-              Nomor HP atau Email
+              Email
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3.5 text-on-surface-variant">
-                <Phone strokeWidth={1.5} className="w-5 h-5" />
+                <Mail strokeWidth={1.5} className="w-5 h-5" />
               </span>
               <input
-                type="text"
-                value={identifier}
+                type="email"
+                value={email}
                 onChange={(e) => {
-                  setIdentifier(e.target.value);
+                  setEmail(e.target.value);
                   setErrorMsg('');
                 }}
-                placeholder="Contoh: +628212345678 atau budi@mail.com"
+                placeholder="Contoh: budi@mail.com"
                 className="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
               />
             </div>
@@ -114,19 +141,42 @@ export default function Login() {
           </div>
 
           {/* Log In Button */}
-          <Button type="submit" variant="primary" fullWidth className="py-3.5 shadow-md">
-            Masuk Sekarang
-          </Button>
-
-          {/* Quick Demo Bypass */}
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.BERANDA)}
-            className="w-full py-2.5 bg-surface-container text-primary rounded-lg text-label-md font-bold transition-all border border-outline-variant hover:bg-surface-container-high"
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            className="py-3.5 shadow-md"
+            disabled={isLoading}
           >
-            Lewati Log Masuk (Mode Demo)
-          </button>
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Memproses...
+              </span>
+            ) : (
+              'Masuk Sekarang'
+            )}
+          </Button>
         </form>
+
+        {/* Demo access for portfolio visitors — no registration needed */}
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={demoLoading}
+          className="w-full mt-4 border-2 border-dashed border-secondary/60 bg-secondary/5 text-secondary font-jakarta font-bold text-body-md py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-secondary/10 active:scale-[0.99] transition-all disabled:opacity-60"
+        >
+          {demoLoading ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" /> Menyiapkan demo...
+            </>
+          ) : (
+            <>🚀 Coba Demo (Tanpa Daftar)</>
+          )}
+        </button>
+        <p className="text-center text-body-sm text-on-surface-variant font-jakarta mt-2">
+          Lihat aplikasi langsung tanpa perlu registrasi.
+        </p>
 
         <div className="relative py-8 flex items-center justify-center">
           <div className="absolute inset-x-0 h-px bg-outline-variant/50" />
@@ -135,10 +185,10 @@ export default function Login() {
           </span>
         </div>
 
-        {/* Google Authentication Icon */}
         <button
-          onClick={() => navigate(ROUTES.BERANDA)}
-          className="w-full border border-outline bg-surface-container-lowest text-on-surface font-jakarta font-bold text-body-md py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container active:translate-y-px transition-all"
+          type="button"
+          disabled
+          className="w-full border border-outline bg-surface-container-lowest text-on-surface/50 font-jakarta font-bold text-body-md py-3 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed"
         >
           <svg className="w-5 h-4" viewBox="0 0 24 24">
             <path

@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   MapPin,
@@ -16,20 +17,23 @@ import {
   Sparkles,
   BookOpen,
   FolderHeart,
+  Loader2,
+  Camera,
 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
-import { mockCurrentUser } from '@/data/mockData';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/features/profile/useUserProfile';
+import { uploadImage } from '@/lib/storage';
+import { supabase } from '@/lib/supabase';
 import { ROUTES } from '@/lib/routes';
-import { UserRole } from '@/types/user';
 
-export interface AkunProps {
-  currentRoleMode: UserRole;
-  onToggleRoleMode: (newRole: UserRole) => void;
-}
-
-export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
+export default function Akun() {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { profile, loading, error, refetch } = useUserProfile();
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
 
   const menuSections = [
     {
@@ -80,10 +84,32 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
     },
   ];
 
-  const handleMenuClick = (label: string) => {
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    setAvatarUploading(true);
+    const ext = file.name.split('.').pop() ?? 'jpg';
+    const path = `${user.id}/avatar.${ext}`;
+
+    const { url, error: uploadErr } = await uploadImage('avatars', file, path, { upsert: true });
+    if (uploadErr || !url) {
+      alert(uploadErr ?? 'Gagal mengunggah foto profil.');
+      setAvatarUploading(false);
+      return;
+    }
+
+    await supabase.from('users').update({ avatar_url: url }).eq('id', user.id);
+    refetch();
+    setAvatarUploading(false);
+    if (avatarInputRef.current) avatarInputRef.current.value = '';
+  };
+
+  const handleMenuClick = async (label: string) => {
     if (label === 'Keluar Akun') {
       const confirmLogout = window.confirm('Apakah Anda yakin ingin keluar dari Akun JembaTani?');
       if (confirmLogout) {
+        await signOut();
         navigate(ROUTES.LOGIN);
       }
     } else {
@@ -91,95 +117,106 @@ export default function Akun({ currentRoleMode, onToggleRoleMode }: AkunProps) {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-surface">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-surface px-5">
+        <div className="text-center">
+          <p className="font-jakarta text-body-md text-error font-semibold">Gagal memuat profil</p>
+          <p className="font-jakarta text-body-sm text-on-surface-variant mt-1">
+            {error ?? 'Data profil tidak ditemukan'}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const roleLabels = profile.roles.map((r) => (r === 'PETANI' ? 'Petani' : 'Pembeli'));
+
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
       {/* Top Section Cream Background */}
       <div className="bg-surface-container pb-8 pt-10 px-5 border-b border-outline-variant/60 flex flex-col items-center text-center">
-        {/* Large Avatar Centered with forest border */}
+        {/* Large Avatar with upload overlay */}
         <div className="relative mb-4">
-          <Avatar
-            src={mockCurrentUser.avatar}
-            name={mockCurrentUser.name}
-            size="xl"
-            isVerified={mockCurrentUser.isVerified}
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleAvatarChange}
+            className="hidden"
           />
+          <button
+            type="button"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={avatarUploading}
+            className="relative group"
+          >
+            <Avatar
+              src={profile.avatarUrl}
+              name={profile.name}
+              size="xl"
+              isVerified={profile.isVerified}
+            />
+            <span className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+              {avatarUploading ? (
+                <Loader2 className="w-6 h-6 text-white animate-spin" />
+              ) : (
+                <Camera className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              )}
+            </span>
+          </button>
         </div>
 
         {/* User identification */}
         <h2 className="font-fraunces text-headline-md font-bold text-primary flex items-center gap-1">
-          {mockCurrentUser.name}
+          {profile.name}
         </h2>
 
-        <span className="text-body-sm uppercase font-bold text-on-surface-variant font-jakarta tracking-wider flex items-center gap-0.5 mt-1">
-          📍 {mockCurrentUser.location}
-        </span>
+        {profile.location && (
+          <span className="text-body-sm uppercase font-bold text-on-surface-variant font-jakarta tracking-wider flex items-center gap-0.5 mt-1">
+            📍 {profile.location}
+          </span>
+        )}
 
-        {/* Verified labels */}
+        {/* Role labels */}
         <div className="flex gap-2 mt-3.5">
-          <Badge variant="permintaan">Petani Garut</Badge>
-          <Badge variant="penawaran">Pembeli Aktif</Badge>
+          {roleLabels.map((label) => (
+            <Badge key={label} variant={label === 'Petani' ? 'permintaan' : 'penawaran'}>
+              {label}
+            </Badge>
+          ))}
         </div>
 
-        {/* Triple Column stats row */}
+        {/* Stats row */}
         <div
           id="author-stats-columns"
-          className="grid grid-cols-3 gap-4 w-full max-w-sm mt-6 pt-5 border-t border-outline-variant/30 text-center"
+          className="grid grid-cols-2 gap-4 w-full max-w-xs mt-6 pt-5 border-t border-outline-variant/30 text-center"
         >
           <div>
             <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
-              1.2K
-            </span>
-            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
-              Pengikut
-            </span>
-          </div>
-          <div className="border-x border-outline-variant/30">
-            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
-              340
-            </span>
-            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
-              Mengikuti
-            </span>
-          </div>
-          <div>
-            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
-              28
+              {profile.postsCount}
             </span>
             <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
               Postingan
             </span>
           </div>
+          <div className="border-l border-outline-variant/30">
+            <span className="font-fraunces font-bold text-body-md text-primary block tabular-nums">
+              {profile.isVerified ? 'Aktif' : 'Belum'}
+            </span>
+            <span className="text-body-sm uppercase font-bold text-on-surface-variant tracking-wider font-jakarta block">
+              Verifikasi
+            </span>
+          </div>
         </div>
-      </div>
-
-      {/* Segmented control mode switcher picker (Petani vs Pembeli) */}
-      <div className="px-5 mt-6">
-        <div className="bg-surface-container-highest p-1.5 rounded-full border border-outline-variant flex gap-1">
-          <button
-            onClick={() => onToggleRoleMode('PETANI')}
-            className={`flex-1 py-3 text-label-md font-bold font-jakarta rounded-full transition-all text-center flex items-center justify-center gap-1.5 ${
-              currentRoleMode === 'PETANI'
-                ? 'bg-primary text-on-primary shadow-sm hover:opacity-95'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            🧑‍🌾 Mode Petani (Jual)
-          </button>
-
-          <button
-            onClick={() => onToggleRoleMode('PEMBELI')}
-            className={`flex-1 py-3 text-label-md font-bold font-jakarta rounded-full transition-all text-center flex items-center justify-center gap-1.5 ${
-              currentRoleMode === 'PEMBELI'
-                ? 'bg-secondary text-on-secondary shadow-sm hover:opacity-95'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            🛒 Mode Pembeli (Beli)
-          </button>
-        </div>
-        <p className="text-body-sm text-center text-on-surface-variant font-jakarta font-medium mt-2 leading-relaxed">
-          Ubah mode di atas untuk mengatur asupan berita draf harga dan relevansi penawaran.
-        </p>
       </div>
 
       {/* Profiles Quick CTAs */}

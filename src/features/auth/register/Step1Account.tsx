@@ -52,22 +52,22 @@ export function Step1Account({
           />
         </FormField>
 
-        <FormField label="Nomor HP (WhatsApp)">
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Contoh: 08212345678"
-            className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
-          />
-        </FormField>
-
-        <FormField label="Email (Opsional)">
+        <FormField label="Email">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="budi@mail.com"
+            className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
+          />
+        </FormField>
+
+        <FormField label="Nomor HP / WhatsApp (Opsional)">
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Contoh: 08212345678"
             className="w-full px-4 py-3 bg-surface-container-low text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-md outline-none transition-all font-jakarta"
           />
         </FormField>

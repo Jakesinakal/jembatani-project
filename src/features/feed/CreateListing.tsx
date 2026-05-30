@@ -5,9 +5,11 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Post, PostType } from '@/types/post';
-import { mockCurrentUser } from '@/data/mockData';
+import { PostType } from '@/types/post';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { ROUTES } from '@/lib/routes';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PhotoUploadSection } from '@/features/feed/create/PhotoUploadSection';
@@ -19,11 +21,12 @@ import { LocationDateSection } from '@/features/feed/create/LocationDateSection'
 import { DescriptionCertSection } from '@/features/feed/create/DescriptionCertSection';
 
 export interface CreateListingProps {
-  onAddPost: (post: Post) => void;
+  refetchPosts: () => void;
 }
 
-export default function CreateListing({ onAddPost }: CreateListingProps) {
+export default function CreateListing({ refetchPosts }: CreateListingProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const listingType = (searchParams.get('type') || 'penawaran').toUpperCase() as PostType;
 
@@ -42,51 +45,50 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
   const [date, setDate] = useState('30 Mei 2026');
   const [desc, setDesc] = useState('');
   const [selectedCerts, setSelectedCerts] = useState<string[]>(['ORGANIK']);
-  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([
-    'https://images.unsplash.com/photo-1588252306573-6cd7a4f0b3de?auto=format&fit=crop&q=80&w=400',
-  ]);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handlePublish = (e: React.FormEvent) => {
+  const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commodity || !stock || !price || !desc) {
-      alert('Harap lengkapi isian wajib: Komoditas, Stok, Harga, dan Deskripsi!');
+      setErrorMsg('Harap lengkapi isian wajib: Komoditas, Stok, Harga, dan Deskripsi!');
       return;
     }
+    if (!user) return;
+
     const finalTitle =
       customTitle ||
       `${commodity} ${listingType === 'PENAWARAN' ? 'Siap Panen' : 'Butuh Cepat'} Grade ${grade}`;
-    const newPost = {
-      id: crypto.randomUUID(),
-      author: {
-        id: mockCurrentUser.id,
-        name: mockCurrentUser.name,
-        avatar: mockCurrentUser.avatar,
-        location: mockCurrentUser.location,
-        isVerified: mockCurrentUser.isVerified,
-      },
+
+    setIsSubmitting(true);
+    setErrorMsg('');
+
+    const { error } = await supabase.from('posts').insert({
+      user_id: user.id,
       type: listingType,
       title: finalTitle,
       price: parseInt(price),
-      unit: unit,
-      minOrderRetail: isRetail ? minRetail : '-',
-      minOrderB2B: isB2B ? minB2B : '-',
-      stockAvailable: listingType === 'PENAWARAN' ? `${stock} ${unit}` : undefined,
-      quantityNeeded: listingType === 'PERMINTAAN' ? `${stock} ${unit}` : undefined,
-      photoUrl:
-        uploadedPhotos[0] ||
-        'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=400',
-      location: location,
-      harvestOrNeededDate: date,
+      unit,
+      min_order_retail: isRetail ? minRetail : null,
+      min_order_b2b: isB2B ? minB2B : null,
+      stock_available: listingType === 'PENAWARAN' ? `${stock} ${unit}` : null,
+      quantity_needed: listingType === 'PERMINTAAN' ? `${stock} ${unit}` : null,
+      photo_url: uploadedPhotos[0] || '',
+      location,
+      harvest_or_needed_date: date,
       certifications: selectedCerts,
       caption: desc,
-      likesCount: 0,
-      commentsCount: 0,
-      sharesCount: 0,
-      isLiked: false,
-      hoursAgo: 0.1,
-    };
-    onAddPost(newPost);
-    alert('Listing berhasil diterbitkan ke feed!');
+    });
+
+    setIsSubmitting(false);
+
+    if (error) {
+      setErrorMsg('Gagal menerbitkan: ' + error.message);
+      return;
+    }
+
+    refetchPosts();
     navigate(ROUTES.BERANDA);
   };
 
@@ -98,6 +100,11 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
       />
 
       <form onSubmit={handlePublish} className="px-5 mt-6 space-y-6">
+        {errorMsg && (
+          <div className="text-error bg-error-container/20 border border-error-container p-3 rounded-lg text-body-sm font-semibold">
+            {errorMsg}
+          </div>
+        )}
         <PhotoUploadSection uploadedPhotos={uploadedPhotos} setUploadedPhotos={setUploadedPhotos} />
         <CommoditySection
           commodity={commodity}
@@ -150,8 +157,16 @@ export default function CreateListing({ onAddPost }: CreateListingProps) {
             variant="primary"
             fullWidth
             className="py-4 shadow-lg text-body-md"
+            disabled={isSubmitting}
           >
-            Posting Sekarang
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Memposting...
+              </span>
+            ) : (
+              'Posting Sekarang'
+            )}
           </Button>
         </div>
       </form>

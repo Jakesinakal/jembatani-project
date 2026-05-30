@@ -4,24 +4,22 @@
  */
 
 import { useState, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, Bell, SlidersHorizontal } from 'lucide-react';
+import { Search, Bell, SlidersHorizontal, Loader2 } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { PostCard } from '@/features/feed/PostCard';
+import { useStartChat } from '@/features/messages/useStartChat';
 import { formatRupiah } from '@/lib/utils';
-import { ROUTES } from '@/lib/routes';
-import { mockCommodities, mockChats } from '@/data/mockData';
+import { mockCommodities } from '@/data/mockData';
 import { Post } from '@/types/post';
-import { UserRole } from '@/types/user';
 
 export interface BerandaProps {
   posts: Post[];
+  postsLoading: boolean;
   onLikePost: (postId: string) => void;
-  currentRoleMode: UserRole;
 }
 
-export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaProps) {
-  const navigate = useNavigate();
+export default function Beranda({ posts, postsLoading, onLikePost }: BerandaProps) {
+  const { startChat } = useStartChat();
   const [activeFilter, setActiveFilter] = useState<
     'Semua' | 'Penawaran' | 'Permintaan' | 'Dekat Saya'
   >('Semua');
@@ -143,21 +141,6 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
         </div>
       </div>
 
-      {/* Mode Personalization Banner */}
-      <div className="px-5 mt-4">
-        <div className="bg-primary-container/20 border border-primary-container/30 px-4 py-2.5 rounded-lg text-label-md font-jakarta flex items-center justify-between text-on-primary-fixed-variant">
-          <span>
-            Feeds ditargetkan khusus untuk{' '}
-            <b className="font-bold underline">
-              {currentRoleMode === 'PETANI' ? 'Kebutuhan Pembeli' : 'Penawaran Petani'}
-            </b>
-          </span>
-          <span className="px-1.5 py-0.5 bg-primary/10 rounded font-bold text-body-sm text-on-primary uppercase">
-            Mode {currentRoleMode}
-          </span>
-        </div>
-      </div>
-
       {/* Filter Horizontal Chip Row */}
       {(() => {
         const filterChips: {
@@ -204,7 +187,11 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
 
       {/* Feed Listing Cards Container */}
       <div id="opportunity-feed-stack" className="px-5 mt-6 space-y-6">
-        {filteredPosts.length === 0 ? (
+        {postsLoading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : filteredPosts.length === 0 ? (
           <EmptyState
             icon={SlidersHorizontal}
             message="Tidak ada hasil yang sesuai filter pencarian."
@@ -215,9 +202,15 @@ export default function Beranda({ posts, onLikePost, currentRoleMode }: BerandaP
               <PostCard
                 post={post}
                 onLikePost={onLikePost}
-                onContact={() => {
-                  navigate(ROUTES.PESAN_DETAIL(mockChats[0].id));
-                }}
+                onContact={() => startChat(post.author.id)}
+                onMakeOffer={() =>
+                  startChat(post.author.id, {
+                    productName: post.title,
+                    productPhoto: post.photoUrl,
+                    originalPrice: post.price,
+                    defaultQuantity: post.type === 'PERMINTAAN' ? (post.quantityNeeded ?? '') : '',
+                  })
+                }
               />
             </Fragment>
           ))

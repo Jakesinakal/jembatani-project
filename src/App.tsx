@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,6 +14,9 @@ import {
 // Layout and Common UI
 import { SafeArea } from '@/components/layout/SafeArea';
 import { BottomNav } from '@/components/layout/BottomNav';
+
+// Auth
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 
 // Feature screens
 import Splash from '@/features/auth/Splash';
@@ -33,45 +35,45 @@ import CreateListing from '@/features/feed/CreateListing';
 import { useFeedPosts } from '@/features/feed/useFeedPosts';
 import { ROUTES } from '@/lib/routes';
 import { Post } from '@/types/post';
-import { UserRole } from '@/types/user';
 
 // Shared Context typing
 export interface AppShellContext {
   posts: Post[];
-  onAddPost: (newPost: Post) => void;
+  postsLoading: boolean;
+  refetchPosts: () => void;
   onLikePost: (postId: string) => void;
-  currentRoleMode: UserRole;
-  setCurrentRoleMode: (role: UserRole) => void;
 }
 
-// Layout frame which holds bottom bar and modal trigger
 function AppShell() {
-  const { posts, handleAddPost, handleLikePost } = useFeedPosts();
-  const [currentRoleMode, setCurrentRoleMode] = useState<UserRole>('PETANI');
+  const { user, loading: authLoading } = useAuth();
+  const { posts, loading: postsLoading, refetch, handleLikePost } = useFeedPosts();
+
+  if (authLoading) return null;
+  if (!user) return <Navigate to={ROUTES.LOGIN} replace />;
 
   const contextValue: AppShellContext = {
     posts,
-    onAddPost: handleAddPost,
+    postsLoading,
+    refetchPosts: refetch,
     onLikePost: handleLikePost,
-    currentRoleMode,
-    setCurrentRoleMode,
   };
 
   return (
     <SafeArea>
-      {/* Scrollable outlet container */}
       <div className="flex-1 flex flex-col min-h-screen">
         <Outlet context={contextValue} />
       </div>
-
-      {/* Persistent Bottom Bar (manages CreateBottomSheet internally) */}
       <BottomNav />
     </SafeArea>
   );
 }
 
-// Wrapper for Authentication screens (which don't show the bottom navigation)
 function AuthShell() {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+  if (user) return <Navigate to={ROUTES.BERANDA} replace />;
+
   return (
     <SafeArea>
       <div className="flex-1 flex flex-col min-h-screen bg-surface">
@@ -137,20 +139,23 @@ const router = createBrowserRouter([
 
 // Wrapper component to pipe Context props safely
 function BerandaWrapper() {
-  const { posts, onLikePost, currentRoleMode } = useOutletContext<AppShellContext>();
-  return <Beranda posts={posts} onLikePost={onLikePost} currentRoleMode={currentRoleMode} />;
+  const { posts, postsLoading, onLikePost } = useOutletContext<AppShellContext>();
+  return <Beranda posts={posts} postsLoading={postsLoading} onLikePost={onLikePost} />;
 }
 
 function AkunWrapper() {
-  const { currentRoleMode, setCurrentRoleMode } = useOutletContext<AppShellContext>();
-  return <Akun currentRoleMode={currentRoleMode} onToggleRoleMode={setCurrentRoleMode} />;
+  return <Akun />;
 }
 
 function CreateListingWrapper() {
-  const { onAddPost } = useOutletContext<AppShellContext>();
-  return <CreateListing onAddPost={onAddPost} />;
+  const { refetchPosts } = useOutletContext<AppShellContext>();
+  return <CreateListing refetchPosts={refetchPosts} />;
 }
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }

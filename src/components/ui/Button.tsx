@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   fullWidth?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -14,6 +14,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   id?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export function Button({
@@ -48,10 +49,11 @@ export function Button({
   };
 
   const widthStyle = fullWidth ? 'w-full' : '';
+  const disabledStyle = props.disabled ? 'opacity-50 cursor-not-allowed' : '';
 
   return (
     <button
-      className={`${baseStyle} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${className}`}
+      className={`${baseStyle} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${disabledStyle} ${className}`}
       {...props}
     >
       {children}

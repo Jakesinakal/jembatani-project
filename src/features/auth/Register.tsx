@@ -5,17 +5,20 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/types/user';
 import { ROUTES } from '@/lib/routes';
 import { Step1Account } from '@/features/auth/register/Step1Account';
-import { Step2Otp } from '@/features/auth/register/Step2Otp';
 import { Step3Role } from '@/features/auth/register/Step3Role';
 import { Step4Location } from '@/features/auth/register/Step4Location';
 
+const TOTAL_STEPS = 3;
+
 export default function Register() {
   const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [step, setStep] = useState(1);
 
   const [fullName, setFullName] = useState('');
@@ -23,18 +26,22 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [mainRole, setMainRole] = useState<UserRole | null>(null);
   const [province, setProvince] = useState('Jawa Barat');
   const [city, setCity] = useState('Garut');
   const [selectedCrops, setSelectedCrops] = useState<string[]>([]);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     setErrorMsg('');
     if (step === 1) {
-      if (!fullName || !phone || !password || !confirmPassword) {
+      if (!fullName || !email || !password || !confirmPassword) {
         setErrorMsg('Harap lengkapi semua bidang yang wajib diisi.');
+        return;
+      }
+      if (password.length < 6) {
+        setErrorMsg('Kata sandi minimal 6 karakter.');
         return;
       }
       if (password !== confirmPassword) {
@@ -43,20 +50,29 @@ export default function Register() {
       }
       setStep(2);
     } else if (step === 2) {
-      if (otp.some((v) => v === '')) {
-        setErrorMsg('Harap masukkan 6 digit kode OTP verifikasi HP.');
-        return;
-      }
-      setStep(3);
-    } else if (step === 3) {
       if (!mainRole) {
         setErrorMsg('Pilih salah satu peran utama Anda terlebih dahulu.');
         return;
       }
-      setStep(4);
-    } else if (step === 4) {
+      setStep(3);
+    } else if (step === 3) {
       if (selectedCrops.length < 3) {
         setErrorMsg('Pilih minimal 3 komoditas minat untuk mempersonalisasi beranda.');
+        return;
+      }
+
+      setIsLoading(true);
+      const { error } = await signUp(email, password, {
+        name: fullName,
+        phone,
+        role: mainRole,
+        location: `${city}, ${province}`,
+        crops: selectedCrops,
+      });
+      setIsLoading(false);
+
+      if (error) {
+        setErrorMsg(error);
         return;
       }
       navigate(ROUTES.BERANDA);
@@ -84,7 +100,7 @@ export default function Register() {
           </button>
           <div className="flex items-center gap-2">
             <span className="text-body-sm font-bold font-jakarta text-on-surface-variant">
-              Langkah {step} dari 4
+              Langkah {step} dari {TOTAL_STEPS}
             </span>
           </div>
         </div>
@@ -92,7 +108,7 @@ export default function Register() {
         <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mb-8">
           <div
             className="h-full bg-primary transition-all duration-300"
-            style={{ width: `${(step / 4) * 100}%` }}
+            style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
           />
         </div>
 
@@ -116,9 +132,8 @@ export default function Register() {
             setConfirmPassword={setConfirmPassword}
           />
         )}
-        {step === 2 && <Step2Otp otp={otp} setOtp={setOtp} phone={phone} />}
-        {step === 3 && <Step3Role mainRole={mainRole} setMainRole={setMainRole} />}
-        {step === 4 && (
+        {step === 2 && <Step3Role mainRole={mainRole} setMainRole={setMainRole} />}
+        {step === 3 && (
           <Step4Location
             province={province}
             setProvince={setProvince}
@@ -138,8 +153,18 @@ export default function Register() {
           fullWidth
           onClick={handleNextStep}
           className="py-3.5 shadow-md"
+          disabled={isLoading}
         >
-          {step === 4 ? 'Selesaikan Pendaftaran (Mulai)' : 'Lanjutkan'}
+          {isLoading ? (
+            <span className="flex items-center justify-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Mendaftarkan...
+            </span>
+          ) : step === TOTAL_STEPS ? (
+            'Selesaikan Pendaftaran (Mulai)'
+          ) : (
+            'Lanjutkan'
+          )}
         </Button>
       </div>
     </div>

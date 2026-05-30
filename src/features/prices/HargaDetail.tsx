@@ -4,8 +4,8 @@
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { Share2, ArrowRight, ShieldCheck } from 'lucide-react';
-import { mockCommodities } from '@/data/mockData';
+import { Share2, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
+import { useCommodityDetail } from '@/features/prices/useCommodityDetail';
 import { formatRupiah } from '@/lib/utils';
 import { MARKET_COMPARISONS } from '@/lib/constants';
 import { ROUTES } from '@/lib/routes';
@@ -16,8 +16,30 @@ import { LineChart } from '@/features/prices/LineChart';
 export default function HargaDetail() {
   const { commodityId } = useParams<{ commodityId: string }>();
   const navigate = useNavigate();
+  const { commodity: item, loading, error } = useCommodityDetail(commodityId);
 
-  const item = mockCommodities.find((c) => c.id === commodityId) || mockCommodities[0];
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-surface">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error || !item) {
+    return (
+      <div className="flex-1 bg-surface">
+        <PageHeader title="Detail Tren Harga" onBack={() => navigate(ROUTES.HARGA)} />
+        <div className="flex items-center justify-center px-5 mt-20">
+          <div className="text-center">
+            <p className="font-jakarta text-body-md text-error font-semibold">
+              {error ?? 'Komoditas tidak ditemukan'}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 pb-24 bg-surface text-on-surface">
